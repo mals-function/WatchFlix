@@ -143,7 +143,7 @@
         </select>
       </div>
 
-      <!-- 5. Switch Account / Log Out Button -->
+      <!-- 5. Switch Account Button -->
       <button 
         @click="$emit('switch-account')"
         class="w-full flex items-center justify-between p-4 bg-neutral-900 hover:bg-neutral-800/80 border border-neutral-800 rounded-xl transition text-left active:scale-[0.99] mt-6"
@@ -156,11 +156,33 @@
           </div>
           <div>
             <div class="text-sm font-bold text-white">Switch Account</div>
-            <div class="text-xs text-neutral-400">Sign in as Admin (admin/admin) or User (user/user)</div>
+            <div class="text-xs text-neutral-400">Sign in with your 5MWatchStream credentials</div>
           </div>
         </div>
-        <span class="text-neutral-400 text-xs font-semibold px-2 py-1 bg-neutral-800 rounded">
+        <span class="text-neutral-300 text-xs font-semibold px-2.5 py-1 bg-neutral-800 rounded-lg border border-neutral-700">
           Sign In
+        </span>
+      </button>
+
+      <!-- 6. Sign Out Button -->
+      <button 
+        v-if="userStore.isAuthenticated"
+        @click="handleSignOut"
+        class="w-full flex items-center justify-between p-4 bg-neutral-900/60 hover:bg-red-950/30 border border-neutral-800 hover:border-red-900/50 rounded-xl transition text-left active:scale-[0.99] mt-3"
+      >
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-red-950/50 text-red-400 flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+            </svg>
+          </div>
+          <div>
+            <div class="text-sm font-bold text-white">Sign Out</div>
+            <div class="text-xs text-neutral-400">Log out of active session</div>
+          </div>
+        </div>
+        <span class="text-red-400 text-xs font-semibold px-2.5 py-1 bg-red-950/60 rounded-lg border border-red-900/40">
+          Sign Out
         </span>
       </button>
     </div>
@@ -180,7 +202,7 @@ import { useWatchlistStore } from '../stores/watchlist';
 import { useHistoryStore } from '../stores/history';
 import { useSettingsStore } from '../stores/settings';
 
-defineEmits<{
+const emit = defineEmits<{
   (e: 'switch-profile'): void;
   (e: 'manage-profiles'): void;
   (e: 'edit-current-profile'): void;
@@ -198,5 +220,10 @@ const selectedRegion = ref(settingsStore.region);
 
 const updateRegion = () => {
   settingsStore.setRegion(selectedRegion.value);
+};
+
+const handleSignOut = () => {
+  userStore.logout();
+  emit('switch-account');
 };
 </script>

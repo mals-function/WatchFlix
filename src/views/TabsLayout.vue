@@ -200,10 +200,10 @@
       @saved="customStreamsStore.loadStreams"
     />
 
-    <!-- StreamFlix Login Modal (admin/admin or user/user) -->
+    <!-- 5MWatchStream Modern Authentication Modal -->
     <LoginModal 
-      :is-open="isLoginOpen"
-      :allow-close="true"
+      :is-open="isLoginOpen || !userStore.isAuthenticated"
+      :allow-close="userStore.isAuthenticated"
       @close="isLoginOpen = false"
     />
   </ion-page>
