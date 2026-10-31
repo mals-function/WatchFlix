@@ -3,8 +3,8 @@
 // Only accessible and updatable via the separate Admin Portal.
 
 export const EMBEDDED_CONFIG = {
-  // TMDB API v3 Key
-  TMDB_API_KEY: '2dca580c2a14b55200e784d157207b4d',
+  // TMDB API Token / Key
+  TMDB_API_KEY: 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMTkxMWI0NjhjM2E5MTU3OTk0MzdhYjQxOGQ3NTM5YyIsIm5iZiI6MTc5MzQ0NDg5NS41MzQwMDAyLCJzdWIiOiI2YWU1Y2MxZjkzNmYzNmRkODEwN2Y4ZjQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.VkZeugRynj4s1XvM53dQz1bGoscxStJqM2bYE-tHdME',
 
   // Watchmode API Key (Can be updated in Admin Portal)
   WATCHMODE_API_KEY: '',

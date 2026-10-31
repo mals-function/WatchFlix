@@ -9,7 +9,7 @@ export const getTmdbApiKey = (): string => {
   if (!stored || stored === '45db073573c0f4f6e4d4ff46b41cb765') {
     return EMBEDDED_CONFIG.TMDB_API_KEY;
   }
-  return (import.meta as any).env?.VITE_TMDB_API_KEY || stored;
+  return stored;
 };
 
 export const setTmdbApiKey = (key: string) => {
@@ -98,15 +98,30 @@ const MOCK_ITEMS: MediaItem[] = [
 
 export const tmdbFetch = async (endpoint: string, params: Record<string, string> = {}) => {
   const apiKey = getTmdbApiKey();
-  const query = new URLSearchParams({
-    api_key: apiKey,
+  const isBearer = apiKey.startsWith('eyJ');
+
+  const queryParams: Record<string, string> = {
     include_adult: 'false',
     language: 'en-US',
     ...params,
-  });
+  };
+
+  const headers: Record<string, string> = {
+    'Accept': 'application/json'
+  };
+
+  if (isBearer) {
+    headers['Authorization'] = `Bearer ${apiKey}`;
+  } else {
+    queryParams['api_key'] = apiKey;
+  }
+
+  const query = new URLSearchParams(queryParams);
 
   try {
-    const res = await fetch(`${TMDB_BASE_URL}${endpoint}?${query.toString()}`);
+    const res = await fetch(`${TMDB_BASE_URL}${endpoint}?${query.toString()}`, {
+      headers
+    });
     if (!res.ok) {
       throw new Error(`TMDB HTTP error ${res.status}`);
     }
