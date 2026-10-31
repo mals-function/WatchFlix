@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-[#141414] pb-24 text-white">
+  <div class="min-h-screen bg-[#141414] pb-28 text-white">
     <!-- Hero Featured Banner -->
     <HeroBanner 
       :media="currentHero" 
@@ -15,7 +15,7 @@
         v-for="chip in categoryChips" 
         :key="chip.id"
         @click="handleSelectCategory(chip.id)"
-        class="px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition border backdrop-blur-md shadow-md active:scale-95 cursor-pointer"
+        class="px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition border backdrop-blur-md shadow-md active:scale-95 cursor-pointer touch-manipulation select-none"
         :class="[
           activeCategory === chip.id 
             ? 'bg-red-600 border-red-600 text-white shadow-red-900/40' 

@@ -30,7 +30,7 @@
     <!-- Row Container with horizontal snap scroll -->
     <div 
       ref="rowContainer" 
-      class="flex items-start gap-3 sm:gap-4 overflow-x-auto no-scrollbar scroll-smooth py-1"
+      class="flex items-start gap-2.5 sm:gap-4 overflow-x-auto no-scrollbar scroll-smooth py-1.5 snap-x snap-mandatory"
     >
       <MediaCard
         v-for="(item, idx) in items"

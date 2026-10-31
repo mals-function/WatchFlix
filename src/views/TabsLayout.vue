@@ -40,13 +40,16 @@
       />
     </main>
 
-    <!-- Mobile Bottom Tab Bar (Netflix Style) -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#121212]/95 backdrop-blur-lg border-t border-neutral-900 px-6 py-2 flex items-center justify-between">
+    <!-- Mobile Bottom Tab Bar (Netflix Style with Safe-Area padding) -->
+    <nav 
+      class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#121212]/95 backdrop-blur-xl border-t border-neutral-900 px-6 pt-2 flex items-center justify-between select-none shadow-2xl"
+      style="padding-bottom: max(env(safe-area-inset-bottom, 0px), 10px);"
+    >
       <!-- Home Tab -->
       <button 
         @click="setTab('home')" 
-        class="flex flex-col items-center gap-1 transition"
-        :class="[currentTab === 'home' ? 'text-white' : 'text-neutral-500 hover:text-neutral-400']"
+        class="flex flex-col items-center gap-1 transition active:scale-90 touch-manipulation py-1"
+        :class="[currentTab === 'home' || currentTab === 'movies' || currentTab === 'series' ? 'text-white' : 'text-neutral-500 hover:text-neutral-400']"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -57,7 +60,7 @@
       <!-- Search Tab -->
       <button 
         @click="setTab('search')" 
-        class="flex flex-col items-center gap-1 transition"
+        class="flex flex-col items-center gap-1 transition active:scale-90 touch-manipulation py-1"
         :class="[currentTab === 'search' ? 'text-white' : 'text-neutral-500 hover:text-neutral-400']"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,7 +72,7 @@
       <!-- My List Tab -->
       <button 
         @click="setTab('watchlist')" 
-        class="flex flex-col items-center gap-1 transition"
+        class="flex flex-col items-center gap-1 transition active:scale-90 touch-manipulation py-1"
         :class="[currentTab === 'watchlist' ? 'text-white' : 'text-neutral-500 hover:text-neutral-400']"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,7 +84,7 @@
       <!-- Profile Tab -->
       <button 
         @click="setTab('profile')" 
-        class="flex flex-col items-center gap-1 transition"
+        class="flex flex-col items-center gap-1 transition active:scale-90 touch-manipulation py-1"
         :class="[currentTab === 'profile' ? 'text-white' : 'text-neutral-500 hover:text-neutral-400']"
       >
         <img 

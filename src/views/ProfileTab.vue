@@ -165,9 +165,9 @@
       </button>
     </div>
 
-    <div class="text-center text-xs text-neutral-600 space-y-1">
-      <p class="font-semibold text-neutral-500">StreamFlix v1.0.0 (Capacitor + Ionic Vue)</p>
-      <p>Multi-Server HD Streaming Engine</p>
+    <div class="text-center text-xs text-neutral-400 space-y-1 pt-4 pb-12">
+      <p class="font-bold text-neutral-300">WatchFlix (Powerded by TMDB)</p>
+      <p class="text-neutral-500 font-medium">Created by: MBA</p>
     </div>
   </div>
 </template>

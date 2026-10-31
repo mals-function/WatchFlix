@@ -1,5 +1,5 @@
 <template>
-  <div v-if="media" class="relative w-full h-[65vh] sm:h-[75vh] max-h-[750px] overflow-hidden select-none">
+  <div v-if="media" class="relative w-full h-[56vh] sm:h-[70vh] max-h-[720px] overflow-hidden select-none">
     <!-- Backdrop Image -->
     <div class="absolute inset-0">
       <img 
@@ -14,50 +14,50 @@
     </div>
 
     <!-- Hero Content -->
-    <div class="absolute bottom-10 left-0 right-0 px-4 md:px-8 max-w-3xl z-10">
+    <div class="absolute bottom-6 sm:bottom-10 left-0 right-0 px-4 md:px-8 max-w-3xl z-10">
       <!-- Netflix Series / Film badge -->
-      <div class="flex items-center gap-2 mb-2">
-        <span class="text-red-600 font-black tracking-widest text-sm flex items-center gap-1">
-          <span class="text-xl">N</span>
-          <span class="tracking-[0.2em] uppercase text-xs font-bold text-neutral-300">
+      <div class="flex items-center gap-2 mb-1.5 sm:mb-2">
+        <span class="text-red-600 font-black tracking-widest text-xs sm:text-sm flex items-center gap-1">
+          <span class="text-lg sm:text-xl">N</span>
+          <span class="tracking-[0.2em] uppercase text-[10px] sm:text-xs font-bold text-neutral-300">
             {{ media.media_type === 'tv' ? 'SERIES' : 'FILM' }}
           </span>
         </span>
-        <span v-if="media.vote_average" class="bg-black/60 backdrop-blur-sm text-green-400 text-xs font-bold px-2 py-0.5 rounded border border-neutral-700/60">
+        <span v-if="media.vote_average" class="bg-black/60 backdrop-blur-sm text-green-400 text-[10px] sm:text-xs font-bold px-1.5 sm:px-2 py-0.5 rounded border border-neutral-700/60">
           {{ Math.round(media.vote_average * 10) }}% Match
         </span>
-        <span class="text-xs text-neutral-400 font-medium">{{ releaseYear }}</span>
+        <span class="text-[10px] sm:text-xs text-neutral-400 font-medium">{{ releaseYear }}</span>
       </div>
 
       <!-- Title -->
-      <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight drop-shadow-md line-clamp-2">
+      <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight drop-shadow-md line-clamp-2">
         {{ title }}
       </h1>
 
       <!-- Overview -->
-      <p class="mt-3 text-sm md:text-base text-neutral-300 line-clamp-3 max-w-xl drop-shadow font-normal leading-relaxed">
+      <p class="mt-2 sm:mt-3 text-xs sm:text-sm md:text-base text-neutral-300 line-clamp-2 sm:line-clamp-3 max-w-xl drop-shadow font-normal leading-relaxed">
         {{ media.overview }}
       </p>
 
       <!-- Action Buttons -->
-      <div class="mt-5 flex items-center gap-3">
+      <div class="mt-3.5 sm:mt-5 flex items-center gap-2.5 sm:gap-3">
         <!-- Play Button -->
         <button 
           @click="$emit('play', media)"
-          class="flex items-center gap-2 bg-white hover:bg-neutral-200 text-black font-bold px-6 py-2.5 rounded-md shadow-lg transition active:scale-95"
+          class="flex items-center gap-2 bg-white hover:bg-neutral-200 active:scale-95 text-black font-bold px-5 sm:px-6 py-2 sm:py-2.5 rounded-md shadow-lg transition"
         >
-          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+          <svg class="w-4 sm:w-5 h-4 sm:h-5 fill-current" viewBox="0 0 24 24">
             <path d="M8 5v14l11-7z"/>
           </svg>
-          <span class="text-sm md:text-base">Play</span>
+          <span class="text-xs sm:text-sm md:text-base">Play</span>
         </button>
 
         <!-- More Info Button -->
         <button 
           @click="$emit('detail', media)"
-          class="flex items-center gap-2 bg-neutral-700/80 hover:bg-neutral-700 text-white font-semibold px-5 py-2.5 rounded-md backdrop-blur shadow-md transition active:scale-95"
+          class="flex items-center gap-2 bg-neutral-700/80 hover:bg-neutral-700 active:scale-95 text-white font-semibold px-4 sm:px-5 py-2 sm:py-2.5 rounded-md backdrop-blur shadow-md transition"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 sm:w-5 h-4 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="10" stroke-width="2"/>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0-4h.01"/>
           </svg>

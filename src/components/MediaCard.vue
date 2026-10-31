@@ -1,7 +1,7 @@
 <template>
   <div 
-    class="group relative flex-none cursor-pointer transition-transform duration-300 ease-out hover:scale-105 select-none"
-    :class="[isWide ? 'w-56 sm:w-64' : 'w-32 sm:w-40 md:w-44']"
+    class="group relative flex-none cursor-pointer transition-transform duration-200 ease-out hover:scale-105 active:scale-95 select-none snap-start touch-manipulation"
+    :class="[isWide ? 'w-52 sm:w-64' : 'w-28 sm:w-36 md:w-44']"
     @click="$emit('select', media)"
   >
     <div class="relative overflow-hidden rounded-md bg-neutral-900 shadow-lg aspect-[2/3] border border-neutral-800/80 group-hover:border-red-600/60 transition-colors">

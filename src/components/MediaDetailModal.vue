@@ -1,7 +1,7 @@
 <template>
   <div 
     v-if="isOpen && media" 
-    class="fixed inset-0 z-45 bg-black/85 backdrop-blur-md flex items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto"
+    class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto"
     @click.self="$emit('close')"
   >
     <div class="relative w-full max-w-4xl bg-[#181818] rounded-none sm:rounded-xl overflow-hidden shadow-2xl border border-neutral-800 text-white my-auto max-h-[95vh] overflow-y-auto no-scrollbar">
