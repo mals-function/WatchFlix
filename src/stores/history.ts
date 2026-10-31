@@ -2,15 +2,22 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { getSupabase } from '../services/supabase';
 import { useUserStore } from './user';
+import { useProfilesStore } from './profiles';
 import type { WatchHistoryItem, MediaItem } from '../types';
 
 export const useHistoryStore = defineStore('history', () => {
   const history = ref<WatchHistoryItem[]>([]);
   const loading = ref(false);
 
+  const getStorageKey = () => {
+    const profilesStore = useProfilesStore();
+    return `WATCHFLIX_HISTORY_${profilesStore.activeProfileId || 'default'}`;
+  };
+
   const loadHistory = async () => {
     loading.value = true;
     const userStore = useUserStore();
+    const profilesStore = useProfilesStore();
     const supabase = getSupabase();
 
     if (supabase && userStore.user && !userStore.isGuest) {
@@ -18,7 +25,7 @@ export const useHistoryStore = defineStore('history', () => {
         const { data, error } = await supabase
           .from('watch_history')
           .select('*')
-          .eq('user_id', userStore.user.id)
+          .eq('user_id', `${userStore.user.id}_${profilesStore.activeProfileId}`)
           .order('last_watched_at', { ascending: false });
 
         if (data && !error) {
@@ -47,14 +54,16 @@ export const useHistoryStore = defineStore('history', () => {
       }
     }
 
-    // Local storage fallback
-    const local = localStorage.getItem('WATCHFLIX_HISTORY');
+    // Local storage fallback partitioned by active profile
+    const local = localStorage.getItem(getStorageKey());
     if (local) {
       try {
         history.value = JSON.parse(local);
       } catch {
         history.value = [];
       }
+    } else {
+      history.value = [];
     }
     loading.value = false;
   };
@@ -97,15 +106,16 @@ export const useHistoryStore = defineStore('history', () => {
       history.value.splice(existingIndex, 1);
     }
     history.value.unshift(historyItem);
-    localStorage.setItem('WATCHFLIX_HISTORY', JSON.stringify(history.value));
+    localStorage.setItem(getStorageKey(), JSON.stringify(history.value));
 
     // Save to Supabase if authenticated
     const userStore = useUserStore();
+    const profilesStore = useProfilesStore();
     const supabase = getSupabase();
     if (supabase && userStore.user && !userStore.isGuest) {
       try {
         await supabase.from('watch_history').upsert({
-          user_id: userStore.user.id,
+          user_id: `${userStore.user.id}_${profilesStore.activeProfileId}`,
           media_id: String(media.id),
           media_type: media.media_type,
           title: media.title || media.name || '',
@@ -135,13 +145,14 @@ export const useHistoryStore = defineStore('history', () => {
 
   const clearHistory = async () => {
     history.value = [];
-    localStorage.removeItem('WATCHFLIX_HISTORY');
+    localStorage.removeItem(getStorageKey());
 
     const userStore = useUserStore();
+    const profilesStore = useProfilesStore();
     const supabase = getSupabase();
     if (supabase && userStore.user && !userStore.isGuest) {
       try {
-        await supabase.from('watch_history').delete().eq('user_id', userStore.user.id);
+        await supabase.from('watch_history').delete().eq('user_id', `${userStore.user.id}_${profilesStore.activeProfileId}`);
       } catch (err) {
         console.warn('Failed to clear Supabase history:', err);
       }

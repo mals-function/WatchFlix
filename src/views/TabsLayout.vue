@@ -3,13 +3,11 @@
     <!-- Top Global Sticky Navbar -->
     <Navbar 
       :active-tab="currentTab"
-      :is-admin="userStore.user?.is_admin"
-      :user-avatar="userAvatar"
+      :user-avatar="profilesStore.activeProfile.avatar"
+      :profile-name="profilesStore.activeProfile.name"
       @nav="setTab"
       @open-search="setTab('search')"
-      @open-settings="isSettingsOpen = true"
-      @open-profile="setTab('profile')"
-      @open-admin="openAdminWithMedia(null)"
+      @open-profile-switcher="isProfileSelectOpen = true"
     />
 
     <!-- Main View Content according to selected tab -->
@@ -30,9 +28,10 @@
       />
       <ProfileTab 
         v-else-if="currentTab === 'profile'" 
-        @open-admin="openAdminWithMedia(null)"
-        @open-settings="isSettingsOpen = true"
-        @open-auth="isAuthOpen = true"
+        @switch-profile="isProfileSelectOpen = true"
+        @manage-profiles="isProfileSelectOpen = true"
+        @edit-current-profile="openEditProfile(profilesStore.activeProfile)"
+        @open-admin-portal="isAdminPortalOpen = true"
       />
     </main>
 
@@ -81,7 +80,7 @@
         :class="[currentTab === 'profile' ? 'text-white' : 'text-neutral-500 hover:text-neutral-400']"
       >
         <img 
-          :src="userAvatar" 
+          :src="profilesStore.activeProfile.avatar" 
           alt="User Profile" 
           class="w-5 h-5 rounded-full object-cover border"
           :class="[currentTab === 'profile' ? 'border-red-600 ring-2 ring-red-600/50' : 'border-neutral-700']"
@@ -107,7 +106,7 @@
       :is-open="isDetailOpen"
       :media="activeMedia"
       :in-watchlist="isDetailInWatchlist"
-      :is-admin="userStore.user?.is_admin"
+      :is-admin="false"
       :episodes="detailEpisodes"
       :episodes-loading="episodesLoading"
       :has-custom-stream="hasActiveCustomStream"
@@ -116,27 +115,36 @@
       @play-trailer="handlePlayTrailer"
       @toggle-watchlist="toggleWatchlist"
       @play-episode="handlePlayEpisode"
-      @admin-edit-stream="openAdminWithMedia"
     />
 
-    <!-- Admin Custom Stream Manager Modal -->
+    <!-- Netflix 5-Profile Selector ("Who's Watching?") -->
+    <ProfileSelectModal 
+      :is-open="isProfileSelectOpen"
+      @close="isProfileSelectOpen = false"
+      @selected="onProfileSelected"
+      @edit-profile="openEditProfile"
+    />
+
+    <!-- Profile Customization Modal -->
+    <EditProfileModal 
+      :is-open="isEditProfileOpen"
+      :profile="selectedProfileToEdit"
+      @close="isEditProfileOpen = false"
+    />
+
+    <!-- Separate Admin Portal (PIN Protected) -->
+    <AdminPortalModal 
+      :is-open="isAdminPortalOpen"
+      @close="isAdminPortalOpen = false"
+      @open-add-stream="openAdminAddStream"
+    />
+
+    <!-- Admin Custom Stream Creator Modal -->
     <AdminStreamModal 
-      :is-open="isAdminOpen"
+      :is-open="isAdminStreamModalOpen"
       :prefill-media="adminPrefillMedia"
-      @close="isAdminOpen = false"
+      @close="isAdminStreamModalOpen = false"
       @saved="customStreamsStore.loadStreams"
-    />
-
-    <!-- Supabase Auth Modal -->
-    <AuthModal 
-      :is-open="isAuthOpen"
-      @close="isAuthOpen = false"
-    />
-
-    <!-- Settings & API Keys Modal -->
-    <SettingsModal 
-      :is-open="isSettingsOpen"
-      @close="isSettingsOpen = false"
     />
   </div>
 </template>
@@ -144,10 +152,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import type { MediaItem, Episode } from '../types';
+import type { UserProfileSlot } from '../config/appConfig';
 import { tmdbService } from '../services/tmdb';
 import { tvmazeService } from '../services/tvmaze';
 import { watchmodeService } from '../services/watchmode';
-import { useUserStore } from '../stores/user';
+import { useProfilesStore } from '../stores/profiles';
 import { useWatchlistStore } from '../stores/watchlist';
 import { useHistoryStore } from '../stores/history';
 import { useCustomStreamsStore } from '../stores/customStreams';
@@ -160,11 +169,12 @@ import ProfileTab from './ProfileTab.vue';
 
 import VideoPlayerModal from '../components/VideoPlayerModal.vue';
 import MediaDetailModal from '../components/MediaDetailModal.vue';
+import ProfileSelectModal from '../components/ProfileSelectModal.vue';
+import EditProfileModal from '../components/EditProfileModal.vue';
+import AdminPortalModal from '../components/AdminPortalModal.vue';
 import AdminStreamModal from '../components/AdminStreamModal.vue';
-import AuthModal from '../components/AuthModal.vue';
-import SettingsModal from '../components/SettingsModal.vue';
 
-const userStore = useUserStore();
+const profilesStore = useProfilesStore();
 const watchlistStore = useWatchlistStore();
 const historyStore = useHistoryStore();
 const customStreamsStore = useCustomStreamsStore();
@@ -174,9 +184,13 @@ const currentTab = ref('home');
 // Modals State
 const isPlayerOpen = ref(false);
 const isDetailOpen = ref(false);
-const isAdminOpen = ref(false);
-const isAuthOpen = ref(false);
-const isSettingsOpen = ref(false);
+const isProfileSelectOpen = ref(false);
+const isEditProfileOpen = ref(false);
+const isAdminPortalOpen = ref(false);
+const isAdminStreamModalOpen = ref(false);
+
+const selectedProfileToEdit = ref<UserProfileSlot | null>(null);
+const adminPrefillMedia = ref<MediaItem | null>(null);
 
 const activeMedia = ref<MediaItem | null>(null);
 const activeStreamUrl = ref<string | undefined>(undefined);
@@ -185,11 +199,6 @@ const activeEpisode = ref<{ season: number; number: number; title: string } | un
 
 const detailEpisodes = ref<Episode[]>([]);
 const episodesLoading = ref(false);
-const adminPrefillMedia = ref<MediaItem | null>(null);
-
-const userAvatar = computed(() => {
-  return userStore.user?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80';
-});
 
 const isDetailInWatchlist = computed(() => {
   return activeMedia.value ? watchlistStore.isInWatchlist(activeMedia.value.id) : false;
@@ -209,8 +218,8 @@ const hasNextEpisode = computed(() => {
 });
 
 onMounted(async () => {
+  profilesStore.initProfiles();
   await Promise.all([
-    userStore.initUser(),
     watchlistStore.loadWatchlist(),
     historyStore.loadHistory(),
     customStreamsStore.loadStreams(),
@@ -220,6 +229,18 @@ onMounted(async () => {
 const setTab = (tab: string) => {
   currentTab.value = tab;
   window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+const onProfileSelected = async (_profile: UserProfileSlot) => {
+  await Promise.all([
+    watchlistStore.loadWatchlist(),
+    historyStore.loadHistory(),
+  ]);
+};
+
+const openEditProfile = (profile: UserProfileSlot) => {
+  selectedProfileToEdit.value = profile;
+  isEditProfileOpen.value = true;
 };
 
 // Opening Media Detail
@@ -271,7 +292,6 @@ const handlePlay = (media: MediaItem, episode?: { season: number; number: number
     activeStreamUrl.value = media.custom_stream_url;
     activeStreamType.value = 'hls';
   } else if (media.trailer_url) {
-    // If no direct video source provided, player will auto-fallback to YouTube or sample HLS stream
     activeStreamUrl.value = media.trailer_url;
     activeStreamType.value = 'youtube';
   } else {
@@ -316,8 +336,8 @@ const toggleWatchlist = (media: MediaItem) => {
   watchlistStore.toggleWatchlist(media);
 };
 
-const openAdminWithMedia = (media: MediaItem | null) => {
-  adminPrefillMedia.value = media;
-  isAdminOpen.value = true;
+const openAdminAddStream = () => {
+  adminPrefillMedia.value = null;
+  isAdminStreamModalOpen.value = true;
 };
 </script>

@@ -1,16 +1,23 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { getSupabase } from '../services/supabase';
 import { useUserStore } from './user';
+import { useProfilesStore } from './profiles';
 import type { MediaItem } from '../types';
 
 export const useWatchlistStore = defineStore('watchlist', () => {
   const watchlist = ref<MediaItem[]>([]);
   const loading = ref(false);
 
+  const getStorageKey = () => {
+    const profilesStore = useProfilesStore();
+    return `WATCHFLIX_WATCHLIST_${profilesStore.activeProfileId || 'default'}`;
+  };
+
   const loadWatchlist = async () => {
     loading.value = true;
     const userStore = useUserStore();
+    const profilesStore = useProfilesStore();
     const supabase = getSupabase();
 
     if (supabase && userStore.user && !userStore.isGuest) {
@@ -18,7 +25,7 @@ export const useWatchlistStore = defineStore('watchlist', () => {
         const { data, error } = await supabase
           .from('user_watchlist')
           .select('*')
-          .eq('user_id', userStore.user.id)
+          .eq('user_id', `${userStore.user.id}_${profilesStore.activeProfileId}`)
           .order('added_at', { ascending: false });
 
         if (data && !error) {
@@ -40,14 +47,16 @@ export const useWatchlistStore = defineStore('watchlist', () => {
       }
     }
 
-    // Local storage fallback
-    const local = localStorage.getItem('WATCHFLIX_WATCHLIST');
+    // Local storage fallback partitioned by profile
+    const local = localStorage.getItem(getStorageKey());
     if (local) {
       try {
         watchlist.value = JSON.parse(local);
       } catch {
         watchlist.value = [];
       }
+    } else {
+      watchlist.value = [];
     }
     loading.value = false;
   };
@@ -68,14 +77,15 @@ export const useWatchlistStore = defineStore('watchlist', () => {
   const addToWatchlist = async (media: MediaItem) => {
     if (isInWatchlist(media.id)) return;
     watchlist.value.unshift(media);
-    localStorage.setItem('WATCHFLIX_WATCHLIST', JSON.stringify(watchlist.value));
+    localStorage.setItem(getStorageKey(), JSON.stringify(watchlist.value));
 
     const userStore = useUserStore();
+    const profilesStore = useProfilesStore();
     const supabase = getSupabase();
     if (supabase && userStore.user && !userStore.isGuest) {
       try {
         await supabase.from('user_watchlist').upsert({
-          user_id: userStore.user.id,
+          user_id: `${userStore.user.id}_${profilesStore.activeProfileId}`,
           media_id: String(media.id),
           media_type: media.media_type,
           title: media.title || media.name || '',
@@ -93,16 +103,17 @@ export const useWatchlistStore = defineStore('watchlist', () => {
 
   const removeFromWatchlist = async (mediaId: string | number) => {
     watchlist.value = watchlist.value.filter(item => String(item.id) !== String(mediaId));
-    localStorage.setItem('WATCHFLIX_WATCHLIST', JSON.stringify(watchlist.value));
+    localStorage.setItem(getStorageKey(), JSON.stringify(watchlist.value));
 
     const userStore = useUserStore();
+    const profilesStore = useProfilesStore();
     const supabase = getSupabase();
     if (supabase && userStore.user && !userStore.isGuest) {
       try {
         await supabase
           .from('user_watchlist')
           .delete()
-          .eq('user_id', userStore.user.id)
+          .eq('user_id', `${userStore.user.id}_${profilesStore.activeProfileId}`)
           .eq('media_id', String(mediaId));
       } catch (err) {
         console.warn('Failed to delete from Supabase watchlist:', err);

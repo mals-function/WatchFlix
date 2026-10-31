@@ -1,15 +1,15 @@
 import type { MediaItem, StreamingProvider } from '../types';
+import { EMBEDDED_CONFIG } from '../config/appConfig';
 
-const DEFAULT_TMDB_API_KEY = '45db073573c0f4f6e4d4ff46b41cb765'; // Public development key
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 export const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p';
 
 export const getTmdbApiKey = (): string => {
-  return localStorage.getItem('WATCHFLIX_TMDB_API_KEY') || (import.meta as any).env?.VITE_TMDB_API_KEY || DEFAULT_TMDB_API_KEY;
+  return localStorage.getItem('WATCHFLIX_ADMIN_TMDB_API_KEY') || (import.meta as any).env?.VITE_TMDB_API_KEY || EMBEDDED_CONFIG.TMDB_API_KEY;
 };
 
 export const setTmdbApiKey = (key: string) => {
-  localStorage.setItem('WATCHFLIX_TMDB_API_KEY', key.trim());
+  localStorage.setItem('WATCHFLIX_ADMIN_TMDB_API_KEY', key.trim());
 };
 
 // High quality fallback mock data for instant offline & first-time preview

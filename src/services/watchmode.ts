@@ -1,13 +1,14 @@
 import type { StreamingProvider } from '../types';
+import { EMBEDDED_CONFIG } from '../config/appConfig';
 
 const WATCHMODE_BASE = 'https://api.watchmode.com/v1';
 
 export const getWatchmodeApiKey = (): string => {
-  return localStorage.getItem('WATCHFLIX_WATCHMODE_API_KEY') || (import.meta as any).env?.VITE_WATCHMODE_API_KEY || '';
+  return localStorage.getItem('WATCHFLIX_ADMIN_WATCHMODE_API_KEY') || (import.meta as any).env?.VITE_WATCHMODE_API_KEY || EMBEDDED_CONFIG.WATCHMODE_API_KEY;
 };
 
 export const setWatchmodeApiKey = (key: string) => {
-  localStorage.setItem('WATCHFLIX_WATCHMODE_API_KEY', key.trim());
+  localStorage.setItem('WATCHFLIX_ADMIN_WATCHMODE_API_KEY', key.trim());
 };
 
 export const watchmodeService = {

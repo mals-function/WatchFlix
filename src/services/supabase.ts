@@ -1,16 +1,16 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-
-// Default / fallback keys or read from localStorage / .env
-const getEnv = (key: string, fallback: string = '') => {
-  return (import.meta as any).env?.[key] || localStorage.getItem(key) || fallback;
-};
+import { EMBEDDED_CONFIG } from '../config/appConfig';
 
 let supabaseInstance: SupabaseClient | null = null;
 
 export const getSupabaseConfig = () => {
-  const url = localStorage.getItem('WATCHFLIX_SUPABASE_URL') || getEnv('VITE_SUPABASE_URL', '');
-  const anonKey = localStorage.getItem('WATCHFLIX_SUPABASE_ANON_KEY') || getEnv('VITE_SUPABASE_ANON_KEY', '');
-  return { url, anonKey, isConfigured: Boolean(url && anonKey) };
+  const url = localStorage.getItem('WATCHFLIX_ADMIN_SUPABASE_URL') || (import.meta as any).env?.VITE_SUPABASE_URL || EMBEDDED_CONFIG.SUPABASE_URL;
+  const anonKey = localStorage.getItem('WATCHFLIX_ADMIN_SUPABASE_ANON_KEY') || (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || EMBEDDED_CONFIG.SUPABASE_ANON_KEY;
+  return { 
+    url, 
+    anonKey, 
+    isConfigured: Boolean(url && anonKey && !anonKey.includes('mock_key')) 
+  };
 };
 
 export const initSupabase = (): SupabaseClient | null => {
@@ -29,7 +29,7 @@ export const initSupabase = (): SupabaseClient | null => {
     });
     return supabaseInstance;
   } catch (error) {
-    console.warn('Failed to initialize Supabase client:', error);
+    console.warn('Supabase initialization fallback:', error);
     supabaseInstance = null;
     return null;
   }
@@ -42,8 +42,8 @@ export const getSupabase = (): SupabaseClient | null => {
   return supabaseInstance;
 };
 
-export const saveSupabaseConfig = (url: string, anonKey: string) => {
-  localStorage.setItem('WATCHFLIX_SUPABASE_URL', url.trim());
-  localStorage.setItem('WATCHFLIX_SUPABASE_ANON_KEY', anonKey.trim());
+export const saveAdminSupabaseConfig = (url: string, anonKey: string) => {
+  localStorage.setItem('WATCHFLIX_ADMIN_SUPABASE_URL', url.trim());
+  localStorage.setItem('WATCHFLIX_ADMIN_SUPABASE_ANON_KEY', anonKey.trim());
   return initSupabase();
 };
