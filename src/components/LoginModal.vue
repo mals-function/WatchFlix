@@ -19,8 +19,8 @@
       <!-- Brand Header -->
       <div class="text-center mb-6">
         <div class="inline-flex items-center justify-center gap-1 mb-2">
-          <span class="text-3xl sm:text-4xl font-black text-red-600 tracking-tighter">
-            STREAMFLIX
+          <span class="text-3xl sm:text-4xl font-black text-red-600 tracking-tight">
+            5MWatchStream
           </span>
         </div>
         <p class="text-xs text-neutral-400 font-medium">
@@ -119,7 +119,7 @@
           type="submit" 
           class="w-full py-3 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-sm shadow-lg shadow-red-900/30 transition transform active:scale-98 flex items-center justify-center gap-2"
         >
-          <span>Sign In to StreamFlix</span>
+          <span>Sign In to 5MWatchStream</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
           </svg>

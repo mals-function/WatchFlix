@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.watchflix.app',
-  appName: 'WatchFlix',
+  appName: '5MWatchStream',
   webDir: 'dist',
   server: {
     androidScheme: 'https'

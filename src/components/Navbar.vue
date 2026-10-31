@@ -9,8 +9,8 @@
         @click="$emit('nav', 'home')"
         class="cursor-pointer flex items-center gap-1.5 select-none"
       >
-        <span class="text-2xl sm:text-3xl font-black text-red-600 tracking-tighter filter drop-shadow">
-          STREAMFLIX
+        <span class="text-xl sm:text-2xl md:text-3xl font-black text-red-600 tracking-tight filter drop-shadow">
+          5MWatchStream
         </span>
       </div>
 
@@ -81,13 +81,13 @@
         <span>⚙️ Admin</span>
       </button>
 
-      <!-- StreamFlix SF Profile Avatar Badge (Matches Screenshot) -->
+      <!-- 5MWatchStream 5M Profile Avatar Badge -->
       <div 
         @click="$emit('open-profile-switcher')"
         class="w-8 h-8 rounded-md bg-red-600 hover:bg-red-700 text-white font-black text-xs flex items-center justify-center cursor-pointer shadow transition active:scale-95 select-none"
         title="Switch Profile"
       >
-        SF
+        5M
       </div>
     </div>
   </header>

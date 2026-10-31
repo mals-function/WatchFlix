@@ -166,7 +166,7 @@
     </div>
 
     <div class="text-center text-xs text-neutral-400 space-y-1 pt-6 pb-6">
-      <p class="font-bold text-neutral-300">WatchFlix (Powerded by TMDB)</p>
+      <p class="font-bold text-neutral-300">5MWatchStream (Powerded by TMDB)</p>
       <p class="text-neutral-500 font-medium">Created by: MBA</p>
     </div>
   </div>
