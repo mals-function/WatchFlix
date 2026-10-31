@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen bg-[#141414] text-white">
+  <div class="relative min-h-screen w-full bg-[#141414] text-white overflow-y-auto">
     <!-- Top Global Sticky Navbar -->
     <Navbar 
       :active-tab="currentTab"

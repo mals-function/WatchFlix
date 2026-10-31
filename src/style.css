@@ -46,11 +46,21 @@
   scrollbar-width: none;
 }
 
+html, body, #app, ion-app, .ion-page {
+  width: 100% !important;
+  min-height: 100% !important;
+  height: auto !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  position: relative !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+}
+
 body {
   background-color: #141414;
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  user-select: none;
   -webkit-font-smoothing: antialiased;
 }
 

@@ -8,28 +8,35 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-weight='900' fill='%23E50914'>W</text></svg>" />
-    <title>WatchFlix - Stream Movies & TV Series</title>
+    <title>StreamFlix - Stream Movies & TV Series</title>
 
-    <!-- Built-in AdBlocker & Anti-Popup Guard -->
+    <!-- Brave Shields Style Ad & Popup Defuser -->
     <script>
       (function() {
-        // 1. Block unauthorized window.open popup spam
-        try {
-          const originalOpen = window.open;
-          window.open = function(url, target, features) {
-            console.warn('[AdShield] Blocked popup request:', url);
-            return null;
-          };
-        } catch(e) {}
-
-        // 2. Prevent top-level redirect hijacks from third-party iframes
-        window.onbeforeunload = function(e) {
-          // Allow internal app navigation, suppress external ad redirects
+        // Safe dummy window object so players never error out when calling window.open
+        const dummyWindow = {
+          closed: false,
+          focus: function() {},
+          blur: function() {},
+          close: function() { this.closed = true; },
+          postMessage: function() {},
+          location: { href: '', replace: function() {} },
+          document: { write: function() {}, close: function() {} }
         };
+
+        try {
+          window.open = function(url, target, features) {
+            console.log('[Brave Shield] Defused popup to:', url);
+            return dummyWindow;
+          };
+          window.alert = function() { return true; };
+          window.confirm = function() { return false; };
+          window.prompt = function() { return null; };
+        } catch(e) {}
       })();
     </script>
   </head>
-  <body class="bg-[#141414] text-white overflow-x-hidden selection:bg-red-600 selection:text-white">
+  <body class="bg-[#141414] text-white selection:bg-red-600 selection:text-white">
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>

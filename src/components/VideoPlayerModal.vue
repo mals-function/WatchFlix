@@ -29,27 +29,19 @@
         </div>
       </div>
 
-      <!-- Right Controls: AdBlock Shield, Server Switcher Dropdown, Next Episode, Fullscreen -->
+      <!-- Right Controls: Brave Shield Indicator, Server Switcher Dropdown, Next Episode, Fullscreen -->
       <div class="flex items-center gap-2 sm:gap-3">
-        <!-- AdBlock Shield Toggle -->
-        <button 
-          @click="toggleAdShield"
-          class="flex items-center gap-1 text-[11px] font-bold px-2.5 py-1.5 rounded-lg border transition shadow active:scale-95"
-          :class="[
-            adShieldEnabled 
-              ? 'bg-green-950/80 border-green-600 text-green-300' 
-              : 'bg-neutral-900 border-neutral-700 text-neutral-400'
-          ]"
-          :title="adShieldEnabled ? 'AdShield Active: Blocking Popups & Redirects' : 'AdShield Off'"
+        <!-- Brave Shield Status Indicator -->
+        <div 
+          class="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1.5 rounded-lg border bg-orange-950/70 border-orange-600/70 text-orange-300 shadow cursor-default select-none"
+          title="Brave Shields Active: Suppresses popups and redirects natively without breaking playback"
         >
-          <svg class="w-3.5 h-3.5" :class="[adShieldEnabled ? 'text-green-400' : 'text-neutral-500']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-          </svg>
-          <span class="hidden sm:inline">AdBlock</span>
-          <span class="text-[9px] uppercase px-1 rounded" :class="[adShieldEnabled ? 'bg-green-900/60' : 'bg-neutral-800']">
-            {{ adShieldEnabled ? 'ON' : 'OFF' }}
+          <span class="text-xs">🦁</span>
+          <span class="hidden sm:inline">Brave Shield</span>
+          <span class="text-[9px] uppercase px-1 rounded bg-orange-900/80 text-orange-200">
+            ON
           </span>
-        </button>
+        </div>
 
         <!-- Server Switcher Dropdown -->
         <div class="relative">
@@ -101,13 +93,12 @@
       class="w-full h-full pt-12 relative flex items-center justify-center bg-black"
     >
       <iframe 
-        :key="embedSrc + (adShieldEnabled ? '-shield' : '-raw')"
+        :key="embedSrc"
         :src="embedSrc" 
         class="w-full h-full border-0" 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
         allowfullscreen
         referrerpolicy="origin"
-        :sandbox="adShieldEnabled ? 'allow-scripts allow-same-origin allow-forms allow-presentation' : undefined"
       ></iframe>
 
       <!-- Quick Server Selector Pills at bottom if server is slow -->
@@ -292,12 +283,6 @@ let controlsTimeout: any = null;
 let saveInterval: any = null;
 
 const selectedServerId = ref(localStorage.getItem('WATCHFLIX_PREFERRED_SERVER') || 'vidlink');
-const adShieldEnabled = ref(localStorage.getItem('WATCHFLIX_AD_SHIELD') !== 'false');
-
-const toggleAdShield = () => {
-  adShieldEnabled.value = !adShieldEnabled.value;
-  localStorage.setItem('WATCHFLIX_AD_SHIELD', String(adShieldEnabled.value));
-};
 
 const isPlaying = ref(false);
 const isBuffering = ref(false);
