@@ -3,16 +3,23 @@
     <!-- Active Account & Profile Card -->
     <div class="bg-[#181818] border border-neutral-800 rounded-2xl p-6 shadow-xl mb-6">
       <div class="flex items-center gap-4">
-        <div class="relative">
+        <div 
+          @click="$emit('edit-current-profile')"
+          class="relative cursor-pointer group"
+          title="Click to customize profile avatar"
+        >
           <img 
-            :src="userStore.user?.avatar_url || profilesStore.activeProfile.avatar" 
-            :alt="userStore.user?.username || profilesStore.activeProfile.name" 
-            class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover border-2 shadow-md"
+            :src="profilesStore.activeProfile.avatar || userStore.user?.avatar_url" 
+            :alt="profilesStore.activeProfile.name || userStore.user?.username" 
+            class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover border-2 shadow-md group-hover:scale-105 transition"
             :class="[userStore.isAdmin ? 'border-red-600 ring-2 ring-red-600/40' : 'border-neutral-600']"
           />
+          <div class="absolute inset-0 bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition text-xs font-bold text-white">
+            ✏️
+          </div>
           <span 
             v-if="userStore.isAdmin"
-            class="absolute -top-2 -right-2 bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full uppercase shadow"
+            class="absolute -top-2 -right-2 bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full uppercase shadow z-10"
           >
             Admin
           </span>

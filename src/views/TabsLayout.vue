@@ -3,8 +3,8 @@
     <!-- Top Global Sticky Navbar -->
     <Navbar 
       :active-tab="currentTab"
-      :user-avatar="profilesStore.activeProfile.avatar"
-      :profile-name="profilesStore.activeProfile.name"
+      :user-avatar="profilesStore.activeProfile.avatar || userStore.user?.avatar_url"
+      :profile-name="profilesStore.activeProfile.name || userStore.user?.username"
       :is-admin="userStore.isAdmin"
       @nav="setTab"
       @open-search="setTab('search')"

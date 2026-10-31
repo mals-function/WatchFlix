@@ -81,27 +81,47 @@
         <span>⚙️ Admin</span>
       </button>
 
-      <!-- 5MWatchStream 5M Profile Avatar Badge -->
-      <div 
+      <!-- Profile Avatar Button displaying chosen avatar picture -->
+      <button 
+        type="button"
         @click="$emit('open-profile-switcher')"
-        class="w-8 h-8 rounded-md bg-red-600 hover:bg-red-700 text-white font-black text-xs flex items-center justify-center cursor-pointer shadow transition active:scale-95 select-none"
-        title="Switch Profile"
+        class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 border-red-600/90 hover:border-red-500 shadow-md transition transform active:scale-95 flex items-center justify-center bg-neutral-900 cursor-pointer select-none ring-1 ring-white/10 shrink-0"
+        :title="`Profile: ${profileName || 'Active Profile'}`"
+        aria-label="Switch Profile"
       >
-        5M
-      </div>
+        <img 
+          v-if="userAvatar && !imageFailed"
+          :src="userAvatar" 
+          :alt="profileName || 'Profile'"
+          class="w-full h-full object-cover"
+          @error="imageFailed = true"
+        />
+        <div 
+          v-else 
+          class="w-full h-full bg-red-600 text-white font-black text-xs flex items-center justify-center"
+        >
+          5M
+        </div>
+      </button>
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 
-defineProps<{
+const props = defineProps<{
   activeTab?: string;
   userAvatar?: string;
   profileName?: string;
   isAdmin?: boolean;
 }>();
+
+const imageFailed = ref(false);
+
+watch(() => props.userAvatar, () => {
+  imageFailed.value = false;
+});
 
 defineEmits<{
   (e: 'nav', tab: string): void;
