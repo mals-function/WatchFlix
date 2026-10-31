@@ -1,156 +1,124 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
-import { getSupabase } from '../services/supabase';
+import { ref, computed } from 'vue';
 import type { UserProfile } from '../types';
 
+export interface AuthAccount extends UserProfile {
+  role: 'admin' | 'user';
+}
+
 export const useUserStore = defineStore('user', () => {
-  const user = ref<UserProfile | null>(null);
-  const session = ref<any>(null);
+  const currentUser = ref<AuthAccount | null>(null);
+  const isAuthenticated = ref(false);
   const loading = ref(false);
   const isGuest = ref(false);
 
-  // Initialize from existing local state or Supabase session
+  const isAdmin = computed(() => {
+    return currentUser.value?.is_admin === true || currentUser.value?.role === 'admin';
+  });
+
   const initUser = async () => {
     loading.value = true;
-    const savedGuest = localStorage.getItem('WATCHFLIX_GUEST_USER');
-    if (savedGuest) {
-      user.value = JSON.parse(savedGuest);
-      isGuest.value = true;
-    }
-
-    const supabase = getSupabase();
-    if (supabase) {
+    const saved = localStorage.getItem('WATCHFLIX_CURRENT_ACCOUNT');
+    if (saved) {
       try {
-        const { data: { session: currentSession } } = await supabase.auth.getSession();
-        if (currentSession?.user) {
-          session.value = currentSession;
-          isGuest.value = false;
-          await fetchProfile(currentSession.user.id, currentSession.user.email!);
+        const parsed = JSON.parse(saved);
+        if (parsed && (parsed.username === 'admin' || parsed.username === 'user')) {
+          currentUser.value = parsed;
+          isAuthenticated.value = true;
+          isGuest.value = parsed.username === 'user';
+          loading.value = false;
+          return;
         }
-
-        // Listen for auth state changes
-        supabase.auth.onAuthStateChange(async (_event, newSession) => {
-          session.value = newSession;
-          if (newSession?.user) {
-            isGuest.value = false;
-            await fetchProfile(newSession.user.id, newSession.user.email!);
-          } else if (!isGuest.value) {
-            user.value = null;
-          }
-        });
-      } catch (err) {
-        console.warn('Supabase auth getSession error:', err);
+      } catch (e) {
+        console.warn('Failed to parse saved account:', e);
       }
     }
 
-    // Default demo user if neither is present
-    if (!user.value) {
-      loginAsGuest('WatchFlix Member');
+    const lastUsername = localStorage.getItem('WATCHFLIX_LAST_USERNAME');
+    if (lastUsername === 'admin') {
+      login('admin', 'admin');
+    } else {
+      login('user', 'user');
     }
     loading.value = false;
   };
 
-  const fetchProfile = async (userId: string, email: string) => {
-    const supabase = getSupabase();
-    if (!supabase) return;
+  const login = (usernameInput: string, passwordInput: string): { success: boolean; message?: string } => {
+    const u = usernameInput.trim().toLowerCase();
+    const p = passwordInput.trim();
 
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (data && !error) {
-        user.value = {
-          id: data.id,
-          email: data.email || email,
-          username: data.username || email.split('@')[0],
-          avatar_url: data.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80',
-          is_admin: data.is_admin || false,
-        };
-      } else {
-        user.value = {
-          id: userId,
-          email,
-          username: email.split('@')[0],
-          avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80',
-          is_admin: false,
-        };
-      }
-    } catch (e) {
-      console.warn('Profile fetch error:', e);
+    if (u === 'admin' && p === 'admin') {
+      const adminAcc: AuthAccount = {
+        id: 'acc_admin',
+        username: 'admin',
+        email: 'admin@watchflix.local',
+        role: 'admin',
+        is_admin: true,
+        avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80',
+      };
+      currentUser.value = adminAcc;
+      isAuthenticated.value = true;
+      isGuest.value = false;
+      localStorage.setItem('WATCHFLIX_CURRENT_ACCOUNT', JSON.stringify(adminAcc));
+      localStorage.setItem('WATCHFLIX_LAST_USERNAME', 'admin');
+      return { success: true };
     }
-  };
 
-  const loginAsGuest = (customName?: string) => {
-    isGuest.value = true;
-    const guestUser: UserProfile = {
-      id: 'guest_' + Math.random().toString(36).substring(2, 9),
-      email: 'guest@watchflix.local',
-      username: customName || 'Netflix Fan',
-      avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
-      is_admin: true, // Allow admin stream testing in guest mode
+    if (u === 'user' && p === 'user') {
+      const userAcc: AuthAccount = {
+        id: 'acc_user',
+        username: 'user',
+        email: 'user@watchflix.local',
+        role: 'user',
+        is_admin: false,
+        avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80',
+      };
+      currentUser.value = userAcc;
+      isAuthenticated.value = true;
+      isGuest.value = true;
+      localStorage.setItem('WATCHFLIX_CURRENT_ACCOUNT', JSON.stringify(userAcc));
+      localStorage.setItem('WATCHFLIX_LAST_USERNAME', 'user');
+      return { success: true };
+    }
+
+    return { 
+      success: false, 
+      message: 'Invalid credentials. Use admin/admin for Admin or user/user for User.' 
     };
-    user.value = guestUser;
-    localStorage.setItem('WATCHFLIX_GUEST_USER', JSON.stringify(guestUser));
   };
 
   const signIn = async (email: string, password: string) => {
-    const supabase = getSupabase();
-    if (!supabase) {
-      throw new Error('Supabase is not configured yet. Configure Supabase URL & Key in Settings.');
-    }
-    loading.value = true;
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    loading.value = false;
-    if (error) throw error;
-    if (data.user) {
-      isGuest.value = false;
-      localStorage.removeItem('WATCHFLIX_GUEST_USER');
-      await fetchProfile(data.user.id, data.user.email!);
-    }
-    return data;
+    const res = login(email, password);
+    if (!res.success) throw new Error(res.message);
+    return res;
   };
 
-  const signUp = async (email: string, password: string, username?: string) => {
-    const supabase = getSupabase();
-    if (!supabase) {
-      throw new Error('Supabase is not configured yet. Configure Supabase URL & Key in Settings.');
-    }
-    loading.value = true;
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { username: username || email.split('@')[0] }
-      }
-    });
-    loading.value = false;
-    if (error) throw error;
-    return data;
+  const signUp = async (email: string, password: string, _username?: string) => {
+    return signIn(email, password);
   };
 
-  const signOut = async () => {
-    const supabase = getSupabase();
-    if (supabase) {
-      await supabase.auth.signOut();
-    }
-    session.value = null;
-    user.value = null;
-    localStorage.removeItem('WATCHFLIX_GUEST_USER');
-    loginAsGuest('WatchFlix Member');
+  const loginAsGuest = () => {
+    login('user', 'user');
+  };
+
+  const logout = () => {
+    currentUser.value = null;
+    isAuthenticated.value = false;
+    isGuest.value = true;
+    localStorage.removeItem('WATCHFLIX_CURRENT_ACCOUNT');
   };
 
   return {
-    user,
-    session,
-    loading,
+    user: currentUser,
+    isAuthenticated,
+    isAdmin,
     isGuest,
+    loading,
     initUser,
+    login,
     signIn,
     signUp,
-    signOut,
     loginAsGuest,
+    logout,
   };
 });

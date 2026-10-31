@@ -5,9 +5,11 @@
       :active-tab="currentTab"
       :user-avatar="profilesStore.activeProfile.avatar"
       :profile-name="profilesStore.activeProfile.name"
+      :is-admin="userStore.isAdmin"
       @nav="setTab"
       @open-search="setTab('search')"
       @open-profile-switcher="isProfileSelectOpen = true"
+      @open-admin-portal="handleOpenAdminPortal"
     />
 
     <!-- Main View Content according to selected tab -->
@@ -31,7 +33,8 @@
         @switch-profile="isProfileSelectOpen = true"
         @manage-profiles="isProfileSelectOpen = true"
         @edit-current-profile="openEditProfile(profilesStore.activeProfile)"
-        @open-admin-portal="isAdminPortalOpen = true"
+        @open-admin-portal="handleOpenAdminPortal"
+        @switch-account="isLoginOpen = true"
       />
     </main>
 
@@ -146,6 +149,13 @@
       @close="isAdminStreamModalOpen = false"
       @saved="customStreamsStore.loadStreams"
     />
+
+    <!-- StreamFlix Login Modal (admin/admin or user/user) -->
+    <LoginModal 
+      :is-open="isLoginOpen || !userStore.isAuthenticated"
+      :allow-close="userStore.isAuthenticated"
+      @close="isLoginOpen = false"
+    />
   </div>
 </template>
 
@@ -156,6 +166,8 @@ import type { UserProfileSlot } from '../config/appConfig';
 import { tmdbService } from '../services/tmdb';
 import { tvmazeService } from '../services/tvmaze';
 import { watchmodeService } from '../services/watchmode';
+import { useUserStore } from '../stores/user';
+import { useSettingsStore } from '../stores/settings';
 import { useProfilesStore } from '../stores/profiles';
 import { useWatchlistStore } from '../stores/watchlist';
 import { useHistoryStore } from '../stores/history';
@@ -173,7 +185,10 @@ import ProfileSelectModal from '../components/ProfileSelectModal.vue';
 import EditProfileModal from '../components/EditProfileModal.vue';
 import AdminPortalModal from '../components/AdminPortalModal.vue';
 import AdminStreamModal from '../components/AdminStreamModal.vue';
+import LoginModal from '../components/LoginModal.vue';
 
+const userStore = useUserStore();
+const settingsStore = useSettingsStore();
 const profilesStore = useProfilesStore();
 const watchlistStore = useWatchlistStore();
 const historyStore = useHistoryStore();
@@ -188,6 +203,7 @@ const isProfileSelectOpen = ref(false);
 const isEditProfileOpen = ref(false);
 const isAdminPortalOpen = ref(false);
 const isAdminStreamModalOpen = ref(false);
+const isLoginOpen = ref(false);
 
 const selectedProfileToEdit = ref<UserProfileSlot | null>(null);
 const adminPrefillMedia = ref<MediaItem | null>(null);
@@ -218,6 +234,7 @@ const hasNextEpisode = computed(() => {
 });
 
 onMounted(async () => {
+  await userStore.initUser();
   profilesStore.initProfiles();
   await Promise.all([
     watchlistStore.loadWatchlist(),
@@ -225,6 +242,13 @@ onMounted(async () => {
     customStreamsStore.loadStreams(),
   ]);
 });
+
+const handleOpenAdminPortal = () => {
+  if (userStore.isAdmin) {
+    settingsStore.isAdminUnlocked = true;
+  }
+  isAdminPortalOpen.value = true;
+};
 
 const setTab = (tab: string) => {
   currentTab.value = tab;

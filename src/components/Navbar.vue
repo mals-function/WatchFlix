@@ -60,6 +60,16 @@
         </svg>
       </button>
 
+      <!-- Admin Quick Button -->
+      <button 
+        v-if="isAdmin"
+        @click="$emit('open-admin-portal')"
+        class="hidden sm:flex items-center gap-1.5 text-xs font-bold text-red-300 bg-red-950/80 hover:bg-red-900 border border-red-700/80 px-2.5 py-1 rounded-md transition shadow"
+        title="Admin Control Center"
+      >
+        <span>⚙️ Admin</span>
+      </button>
+
       <!-- Active Profile Button (Click switches profile or navigates to Profile) -->
       <button 
         @click="$emit('open-profile-switcher')"
@@ -73,6 +83,9 @@
         />
         <span class="hidden sm:inline text-xs font-semibold text-neutral-300 group-hover:text-white max-w-[80px] truncate">
           {{ profileName }}
+        </span>
+        <span v-if="isAdmin" class="text-[9px] font-black uppercase bg-red-600 text-white px-1 rounded">
+          Admin
         </span>
         <svg class="w-3.5 h-3.5 text-neutral-400 group-hover:text-white hidden sm:block transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -89,12 +102,14 @@ defineProps<{
   activeTab?: string;
   userAvatar?: string;
   profileName?: string;
+  isAdmin?: boolean;
 }>();
 
 defineEmits<{
   (e: 'nav', tab: string): void;
   (e: 'open-search'): void;
   (e: 'open-profile-switcher'): void;
+  (e: 'open-admin-portal'): void;
 }>();
 
 const isScrolled = ref(false);

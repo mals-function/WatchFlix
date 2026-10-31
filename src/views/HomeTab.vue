@@ -9,7 +9,24 @@
       @toggle-watchlist="toggleWatchlist"
     />
 
-    <div class="relative z-20 -mt-10 sm:-mt-16 space-y-2">
+    <!-- StreamFlix Style Category Filter Chips -->
+    <div class="relative z-30 px-4 md:px-8 -mt-6 sm:-mt-10 mb-4 flex items-center gap-2 overflow-x-auto no-scrollbar">
+      <button 
+        v-for="chip in categoryChips" 
+        :key="chip.id"
+        @click="activeCategory = chip.id"
+        class="px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition border backdrop-blur-md shadow-md active:scale-95"
+        :class="[
+          activeCategory === chip.id 
+            ? 'bg-red-600 border-red-600 text-white shadow-red-900/40' 
+            : 'bg-black/70 border-neutral-800 text-neutral-300 hover:text-white hover:bg-neutral-800'
+        ]"
+      >
+        {{ chip.label }}
+      </button>
+    </div>
+
+    <div class="relative z-20 space-y-2">
       <!-- 1. Continue Watching Row (if user has active history) -->
       <MediaRow 
         v-if="continueWatchingList.length > 0"
@@ -22,6 +39,7 @@
 
       <!-- 2. Trending Now Row -->
       <MediaRow 
+        v-if="activeCategory === 'all' || activeCategory === 'top'"
         title="Trending Now"
         :items="trendingItems"
         :show-rank="true"
@@ -30,6 +48,7 @@
 
       <!-- 3. Netflix Originals Row -->
       <MediaRow 
+        v-if="activeCategory === 'all' || activeCategory === 'series'"
         title="Netflix Originals"
         badge="N Series"
         :items="netflixOriginals"
@@ -38,6 +57,7 @@
 
       <!-- 4. Top Rated Movies -->
       <MediaRow 
+        v-if="activeCategory === 'all' || activeCategory === 'movies' || activeCategory === 'top'"
         title="Critically Acclaimed Movies"
         :items="topRatedMovies"
         @select="openDetail"
@@ -45,6 +65,7 @@
 
       <!-- 5. Popular TV Series -->
       <MediaRow 
+        v-if="activeCategory === 'all' || activeCategory === 'series'"
         title="Binge-Worthy TV Series"
         :items="popularSeries"
         @select="openDetail"
@@ -52,6 +73,7 @@
 
       <!-- 6. Action & Sci-Fi Blockbusters -->
       <MediaRow 
+        v-if="activeCategory === 'all' || activeCategory === 'action' || activeCategory === 'movies'"
         title="Action & Sci-Fi"
         :items="actionMovies"
         @select="openDetail"
@@ -59,6 +81,7 @@
 
       <!-- 7. Anime & Animation -->
       <MediaRow 
+        v-if="activeCategory === 'all' || activeCategory === 'anime'"
         title="Animation & Anime"
         :items="animeShows"
         @select="openDetail"
@@ -83,6 +106,16 @@ const emit = defineEmits<{
 
 const watchlistStore = useWatchlistStore();
 const historyStore = useHistoryStore();
+
+const activeCategory = ref('all');
+const categoryChips = [
+  { id: 'all', label: 'All' },
+  { id: 'movies', label: 'Movies' },
+  { id: 'series', label: 'TV Shows' },
+  { id: 'action', label: 'Action' },
+  { id: 'anime', label: 'Anime & Kids' },
+  { id: 'top', label: 'Top Rated' },
+];
 
 const heroItem = ref<MediaItem | null>(null);
 const trendingItems = ref<MediaItem[]>([]);
