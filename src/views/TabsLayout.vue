@@ -16,6 +16,8 @@
     <main class="w-full">
       <HomeTab 
         v-if="currentTab === 'home' || currentTab === 'movies' || currentTab === 'series'" 
+        :tab="currentTab"
+        @update:tab="setTab"
         @play="handlePlay" 
         @detail="handleOpenDetail" 
       />
@@ -254,6 +256,10 @@ const handleOpenAdminPortal = () => {
 const setTab = (tab: string) => {
   currentTab.value = tab;
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  const page = document.querySelector('.ion-page');
+  if (page) {
+    page.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 };
 
 const onProfileSelected = async (_profile: UserProfileSlot) => {

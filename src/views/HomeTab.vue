@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-[#141414] pb-24 text-white">
     <!-- Hero Featured Banner -->
     <HeroBanner 
-      :media="heroItem" 
+      :media="currentHero" 
       :in-watchlist="isHeroInWatchlist"
       @play="openPlayer"
       @detail="openDetail"
@@ -14,8 +14,8 @@
       <button 
         v-for="chip in categoryChips" 
         :key="chip.id"
-        @click="activeCategory = chip.id"
-        class="px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition border backdrop-blur-md shadow-md active:scale-95"
+        @click="handleSelectCategory(chip.id)"
+        class="px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition border backdrop-blur-md shadow-md active:scale-95 cursor-pointer"
         :class="[
           activeCategory === chip.id 
             ? 'bg-red-600 border-red-600 text-white shadow-red-900/40' 
@@ -37,61 +37,161 @@
         @select="openMediaFromHistory"
       />
 
-      <!-- 2. Trending Now Row -->
-      <MediaRow 
-        v-if="activeCategory === 'all' || activeCategory === 'top'"
-        title="Trending Now"
-        :items="trendingItems"
-        :show-rank="true"
-        @select="openDetail"
-      />
+      <!-- ==================== MOVIES VIEW ==================== -->
+      <template v-if="activeCategory === 'movies'">
+        <MediaRow 
+          title="Trending Movies"
+          :items="trendingMovies"
+          :show-rank="true"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Critically Acclaimed Movies"
+          :items="topRatedMovies"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Action & Adventure Blockbusters"
+          :items="actionMovies"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Sci-Fi & Cyberpunk Hits"
+          :items="scifiMovies"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Comedy & Drama Favorites"
+          :items="comedyMovies"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Horror & Thrillers"
+          :items="horrorMovies"
+          @select="openDetail"
+        />
+      </template>
 
-      <!-- 3. Netflix Originals Row -->
-      <MediaRow 
-        v-if="activeCategory === 'all' || activeCategory === 'series'"
-        title="Netflix Originals"
-        badge="N Series"
-        :items="netflixOriginals"
-        @select="openDetail"
-      />
+      <!-- ==================== TV SHOWS / SERIES VIEW ==================== -->
+      <template v-else-if="activeCategory === 'series'">
+        <MediaRow 
+          title="Trending TV Series"
+          :items="trendingSeries"
+          :show-rank="true"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Netflix Originals"
+          badge="N Series"
+          :items="netflixOriginals"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Binge-Worthy TV Hits"
+          :items="popularSeries"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Action & Sci-Fi Series"
+          :items="actionShows"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Animation & Anime Series"
+          :items="animeShows"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Crime & Mystery Dramas"
+          :items="crimeShows"
+          @select="openDetail"
+        />
+      </template>
 
-      <!-- 4. Top Rated Movies -->
-      <MediaRow 
-        v-if="activeCategory === 'all' || activeCategory === 'movies' || activeCategory === 'top'"
-        title="Critically Acclaimed Movies"
-        :items="topRatedMovies"
-        @select="openDetail"
-      />
+      <!-- ==================== ALL (DEFAULT HOME) VIEW ==================== -->
+      <template v-else-if="activeCategory === 'all'">
+        <MediaRow 
+          title="Trending Now"
+          :items="trendingItems"
+          :show-rank="true"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Netflix Originals"
+          badge="N Series"
+          :items="netflixOriginals"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Critically Acclaimed Movies"
+          :items="topRatedMovies"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Binge-Worthy TV Series"
+          :items="popularSeries"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Action & Sci-Fi Blockbusters"
+          :items="actionMovies"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Animation & Anime"
+          :items="animeShows"
+          @select="openDetail"
+        />
+      </template>
 
-      <!-- 5. Popular TV Series -->
-      <MediaRow 
-        v-if="activeCategory === 'all' || activeCategory === 'series'"
-        title="Binge-Worthy TV Series"
-        :items="popularSeries"
-        @select="openDetail"
-      />
+      <!-- ==================== ACTION VIEW ==================== -->
+      <template v-else-if="activeCategory === 'action'">
+        <MediaRow 
+          title="Action Movies"
+          :items="actionMovies"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Action & Sci-Fi Shows"
+          :items="actionShows"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Sci-Fi & Cyberpunk Hits"
+          :items="scifiMovies"
+          @select="openDetail"
+        />
+      </template>
 
-      <!-- 6. Action & Sci-Fi Blockbusters -->
-      <MediaRow 
-        v-if="activeCategory === 'all' || activeCategory === 'action' || activeCategory === 'movies'"
-        title="Action & Sci-Fi"
-        :items="actionMovies"
-        @select="openDetail"
-      />
+      <!-- ==================== ANIME VIEW ==================== -->
+      <template v-else-if="activeCategory === 'anime'">
+        <MediaRow 
+          title="Animation & Anime Series"
+          :items="animeShows"
+          @select="openDetail"
+        />
+      </template>
 
-      <!-- 7. Anime & Animation -->
-      <MediaRow 
-        v-if="activeCategory === 'all' || activeCategory === 'anime'"
-        title="Animation & Anime"
-        :items="animeShows"
-        @select="openDetail"
-      />
+      <!-- ==================== TOP RATED VIEW ==================== -->
+      <template v-else-if="activeCategory === 'top'">
+        <MediaRow 
+          title="Top Rated Movies"
+          :items="topRatedMovies"
+          :show-rank="true"
+          @select="openDetail"
+        />
+        <MediaRow 
+          title="Top Rated TV Hits"
+          :items="popularSeries"
+          @select="openDetail"
+        />
+      </template>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import type { MediaItem, WatchHistoryItem } from '../types';
 import { tmdbService, MOCK_ITEMS } from '../services/tmdb';
 import { useWatchlistStore } from '../stores/watchlist';
@@ -99,9 +199,16 @@ import { useHistoryStore } from '../stores/history';
 import HeroBanner from '../components/HeroBanner.vue';
 import MediaRow from '../components/MediaRow.vue';
 
+const props = withDefaults(defineProps<{
+  tab?: string;
+}>(), {
+  tab: 'home'
+});
+
 const emit = defineEmits<{
   (e: 'play', media: MediaItem, episode?: any): void;
   (e: 'detail', media: MediaItem): void;
+  (e: 'update:tab', tab: string): void;
 }>();
 
 const watchlistStore = useWatchlistStore();
@@ -117,16 +224,57 @@ const categoryChips = [
   { id: 'top', label: 'Top Rated' },
 ];
 
+// Catalog states
 const heroItem = ref<MediaItem | null>(MOCK_ITEMS[0] || null);
 const trendingItems = ref<MediaItem[]>([...MOCK_ITEMS]);
+const trendingMovies = ref<MediaItem[]>([]);
+const trendingSeries = ref<MediaItem[]>([]);
 const netflixOriginals = ref<MediaItem[]>([]);
 const topRatedMovies = ref<MediaItem[]>([]);
 const popularSeries = ref<MediaItem[]>([]);
 const actionMovies = ref<MediaItem[]>([]);
+const scifiMovies = ref<MediaItem[]>([]);
+const comedyMovies = ref<MediaItem[]>([]);
+const horrorMovies = ref<MediaItem[]>([]);
 const animeShows = ref<MediaItem[]>([]);
+const actionShows = ref<MediaItem[]>([]);
+const crimeShows = ref<MediaItem[]>([]);
+
+// Sync navbar tab with category chips
+watch(() => props.tab, (newTab) => {
+  if (newTab === 'movies') {
+    activeCategory.value = 'movies';
+  } else if (newTab === 'series') {
+    activeCategory.value = 'series';
+  } else if (newTab === 'home') {
+    activeCategory.value = 'all';
+  }
+}, { immediate: true });
+
+const handleSelectCategory = (categoryId: string) => {
+  activeCategory.value = categoryId;
+  if (categoryId === 'movies') {
+    emit('update:tab', 'movies');
+  } else if (categoryId === 'series') {
+    emit('update:tab', 'series');
+  } else if (categoryId === 'all') {
+    emit('update:tab', 'home');
+  }
+};
+
+// Dynamic Hero Banner based on active category
+const currentHero = computed<MediaItem | null>(() => {
+  if (activeCategory.value === 'movies') {
+    return trendingMovies.value[0] || topRatedMovies.value[0] || heroItem.value;
+  }
+  if (activeCategory.value === 'series') {
+    return netflixOriginals.value[0] || trendingSeries.value[0] || heroItem.value;
+  }
+  return heroItem.value;
+});
 
 const isHeroInWatchlist = computed(() => {
-  return heroItem.value ? watchlistStore.isInWatchlist(heroItem.value.id) : false;
+  return currentHero.value ? watchlistStore.isInWatchlist(currentHero.value.id) : false;
 });
 
 const continueWatchingList = computed<MediaItem[]>(() => {
@@ -158,21 +306,49 @@ onMounted(async () => {
 
 const loadCatalogData = async () => {
   try {
-    const [trending, originals, topMovies, popSeries, action, anime] = await Promise.all([
+    const [
+      trending, 
+      tMovies, 
+      tSeries, 
+      originals, 
+      topMovies, 
+      popSeries, 
+      actionM, 
+      scifiM, 
+      comedyM, 
+      horrorM, 
+      animeS, 
+      actionS, 
+      crimeS
+    ] = await Promise.all([
       tmdbService.getTrending('all', 'week'),
+      tmdbService.getTrending('movie', 'week'),
+      tmdbService.getTrending('tv', 'week'),
       tmdbService.getNetflixOriginals(),
       tmdbService.getTopRatedMovies(),
       tmdbService.getPopularSeries(),
       tmdbService.discover('movie', { genreId: 28 }),
+      tmdbService.discover('movie', { genreId: 878 }),
+      tmdbService.discover('movie', { genreId: 35 }),
+      tmdbService.discover('movie', { genreId: 27 }),
       tmdbService.discover('tv', { genreId: 16 }),
+      tmdbService.discover('tv', { genreId: 10759 }),
+      tmdbService.discover('tv', { genreId: 80 }),
     ]);
 
     trendingItems.value = trending;
+    trendingMovies.value = tMovies;
+    trendingSeries.value = tSeries;
     netflixOriginals.value = originals;
     topRatedMovies.value = topMovies;
     popularSeries.value = popSeries;
-    actionMovies.value = action;
-    animeShows.value = anime;
+    actionMovies.value = actionM;
+    scifiMovies.value = scifiM;
+    comedyMovies.value = comedyM;
+    horrorMovies.value = horrorM;
+    animeShows.value = animeS;
+    actionShows.value = actionS;
+    crimeShows.value = crimeS;
 
     if (originals.length > 0) {
       heroItem.value = originals[0];
