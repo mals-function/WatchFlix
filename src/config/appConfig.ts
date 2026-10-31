@@ -4,7 +4,7 @@
 
 export const EMBEDDED_CONFIG = {
   // TMDB API v3 Key
-  TMDB_API_KEY: '45db073573c0f4f6e4d4ff46b41cb765',
+  TMDB_API_KEY: '2dca580c2a14b55200e784d157207b4d',
 
   // Watchmode API Key (Can be updated in Admin Portal)
   WATCHMODE_API_KEY: '',

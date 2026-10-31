@@ -5,7 +5,11 @@ const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 export const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p';
 
 export const getTmdbApiKey = (): string => {
-  return localStorage.getItem('WATCHFLIX_ADMIN_TMDB_API_KEY') || (import.meta as any).env?.VITE_TMDB_API_KEY || EMBEDDED_CONFIG.TMDB_API_KEY;
+  const stored = localStorage.getItem('WATCHFLIX_ADMIN_TMDB_API_KEY') || localStorage.getItem('WATCHFLIX_TMDB_API_KEY');
+  if (!stored || stored === '45db073573c0f4f6e4d4ff46b41cb765') {
+    return EMBEDDED_CONFIG.TMDB_API_KEY;
+  }
+  return (import.meta as any).env?.VITE_TMDB_API_KEY || stored;
 };
 
 export const setTmdbApiKey = (key: string) => {
