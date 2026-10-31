@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-[#141414] pt-20 pb-28 px-4 md:px-8 text-white max-w-2xl mx-auto select-none">
+  <div class="w-full pt-20 pb-10 px-4 md:px-8 text-white max-w-2xl mx-auto select-none">
     <!-- Active Account & Profile Card -->
     <div class="bg-[#181818] border border-neutral-800 rounded-2xl p-6 shadow-xl mb-6">
       <div class="flex items-center gap-4">
@@ -165,7 +165,7 @@
       </button>
     </div>
 
-    <div class="text-center text-xs text-neutral-400 space-y-1 pt-4 pb-12">
+    <div class="text-center text-xs text-neutral-400 space-y-1 pt-6 pb-6">
       <p class="font-bold text-neutral-300">WatchFlix (Powerded by TMDB)</p>
       <p class="text-neutral-500 font-medium">Created by: MBA</p>
     </div>

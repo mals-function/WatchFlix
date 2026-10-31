@@ -1,5 +1,5 @@
 <template>
-  <ion-page class="relative min-h-screen w-full bg-[#141414] text-white overflow-y-auto block">
+  <ion-page class="w-full h-full bg-[#141414] text-white overflow-hidden flex flex-col">
     <!-- Top Global Sticky Navbar -->
     <Navbar 
       :active-tab="currentTab"
@@ -12,8 +12,8 @@
       @open-admin-portal="handleOpenAdminPortal"
     />
 
-    <!-- Main View Content according to selected tab -->
-    <main class="w-full">
+    <!-- Main View Content that scrolls independently -->
+    <main id="main-content" class="flex-1 w-full overflow-y-auto overflow-x-hidden relative">
       <HomeTab 
         v-if="currentTab === 'home'" 
         @update:tab="setTab"
@@ -55,10 +55,10 @@
       />
     </main>
 
-    <!-- Mobile Bottom Tab Bar (Netflix Style with Safe-Area padding) -->
+    <!-- Mobile Bottom Tab Bar (Pinned firmly to bottom) -->
     <nav 
-      class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#121212]/95 backdrop-blur-xl border-t border-neutral-900 px-6 pt-2 flex items-center justify-between select-none shadow-2xl"
-      style="padding-bottom: max(env(safe-area-inset-bottom, 0px), 10px);"
+      class="md:hidden flex-none z-40 bg-[#121212]/95 backdrop-blur-xl border-t border-neutral-900 px-6 pt-2.5 flex items-center justify-between select-none shadow-2xl"
+      style="padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);"
     >
       <!-- Home Tab -->
       <button 
@@ -275,9 +275,9 @@ const handleOpenAdminPortal = () => {
 const setTab = (tab: string) => {
   currentTab.value = tab;
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  const page = document.querySelector('.ion-page');
-  if (page) {
-    page.scrollTo({ top: 0, behavior: 'smooth' });
+  const scroller = document.getElementById('main-content');
+  if (scroller) {
+    scroller.scrollTo({ top: 0, behavior: 'smooth' });
   }
 };
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-[#141414] text-white pt-20 sm:pt-24 pb-28 px-4 sm:px-6 md:px-8 max-w-[1920px] mx-auto">
+  <div class="w-full text-white pt-20 sm:pt-24 pb-12 px-4 sm:px-6 md:px-8 max-w-[1920px] mx-auto">
     <!-- Header Section -->
     <div class="mb-6">
       <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight uppercase">

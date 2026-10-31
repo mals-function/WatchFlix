@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-[#141414] pt-20 pb-24 px-4 md:px-8 text-white">
+  <div class="w-full pt-20 pb-12 px-4 md:px-8 text-white">
     <!-- Header with Tabs: My List vs Watch History -->
     <div class="flex items-center justify-between mb-6 pb-3 border-b border-neutral-800">
       <div class="flex items-center gap-6">

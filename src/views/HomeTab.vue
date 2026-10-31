@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-[#141414] pb-28 text-white">
+  <div class="w-full pb-10 text-white">
     <!-- Hero Featured Banner -->
     <HeroBanner 
       :media="currentHero" 

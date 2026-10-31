@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-[#141414] pt-20 pb-24 px-4 md:px-8 text-white">
+  <div class="w-full pt-20 pb-12 px-4 md:px-8 text-white">
     <!-- Search Bar -->
     <div class="max-w-2xl mx-auto mb-6">
       <div class="relative flex items-center">
