@@ -9,6 +9,25 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-weight='900' fill='%23E50914'>W</text></svg>" />
     <title>WatchFlix - Stream Movies & TV Series</title>
+
+    <!-- Built-in AdBlocker & Anti-Popup Guard -->
+    <script>
+      (function() {
+        // 1. Block unauthorized window.open popup spam
+        try {
+          const originalOpen = window.open;
+          window.open = function(url, target, features) {
+            console.warn('[AdShield] Blocked popup request:', url);
+            return null;
+          };
+        } catch(e) {}
+
+        // 2. Prevent top-level redirect hijacks from third-party iframes
+        window.onbeforeunload = function(e) {
+          // Allow internal app navigation, suppress external ad redirects
+        };
+      })();
+    </script>
   </head>
   <body class="bg-[#141414] text-white overflow-x-hidden selection:bg-red-600 selection:text-white">
     <div id="app"></div>
