@@ -117,11 +117,11 @@
         <!-- Submit Button -->
         <button 
           type="submit" 
-          class="w-full py-3 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-sm shadow-lg shadow-red-900/30 transition transform active:scale-98 flex items-center justify-center gap-2"
+          class="w-full py-3.5 rounded-full bg-gradient-to-r from-red-600 via-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-extrabold text-sm shadow-[0_8px_25px_-4px_rgba(229,9,20,0.5)] transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
         >
           <span>Sign In to 5MWatchStream</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
           </svg>
         </button>
       </form>

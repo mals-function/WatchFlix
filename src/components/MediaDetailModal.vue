@@ -35,38 +35,39 @@
             <!-- Play Button -->
             <button 
               @click="$emit('play', media)"
-              class="flex items-center gap-2 bg-white hover:bg-neutral-200 text-black font-bold px-6 py-2 rounded-md shadow-lg transition active:scale-95"
+              class="flex items-center gap-2.5 bg-white hover:bg-neutral-100 text-black font-extrabold px-6 py-2.5 rounded-full shadow-[0_8px_25px_-5px_rgba(255,255,255,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 cursor-pointer"
             >
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
-              <span>Play Now</span>
+              <div class="w-5 h-5 rounded-full bg-black/10 flex items-center justify-center">
+                <svg class="w-3.5 h-3.5 fill-black ml-0.5" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+              <span class="text-sm font-bold tracking-wide">Play Now</span>
             </button>
 
             <!-- Trailer Button -->
             <button 
               v-if="media.trailer_url"
               @click="$emit('play-trailer', media)"
-              class="flex items-center gap-2 bg-neutral-800/80 hover:bg-neutral-700 text-white font-semibold px-4 py-2 rounded-md border border-neutral-600/60 backdrop-blur transition active:scale-95"
+              class="flex items-center gap-2 bg-neutral-900/80 hover:bg-neutral-800 text-white font-bold px-5 py-2.5 rounded-full border border-white/15 hover:border-white/30 backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95 cursor-pointer"
             >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
               </svg>
-              <span>Watch Trailer</span>
+              <span class="text-xs sm:text-sm">Trailer</span>
             </button>
 
             <!-- Watchlist Button -->
             <button 
               @click="$emit('toggle-watchlist', media)"
-              class="w-9 h-9 rounded-full border border-neutral-600 bg-neutral-900/80 hover:bg-neutral-800 text-white flex items-center justify-center transition"
+              class="w-11 h-11 rounded-full border border-white/15 hover:border-white/35 bg-neutral-900/80 hover:bg-neutral-800 text-white flex items-center justify-center backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95 shadow-lg cursor-pointer"
               :title="inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'"
             >
               <svg v-if="inWatchlist" class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
               </svg>
-              <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+              <svg v-else class="w-5 h-5 text-neutral-300 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4" />
               </svg>
             </button>
 
@@ -74,7 +75,7 @@
             <button 
               v-if="isAdmin"
               @click="$emit('admin-edit-stream', media)"
-              class="flex items-center gap-1.5 text-xs bg-red-950/80 hover:bg-red-900 border border-red-700/60 text-red-200 px-3 py-2 rounded-md font-semibold transition"
+              class="flex items-center gap-1.5 text-xs bg-red-950/80 hover:bg-red-900 border border-red-700/60 text-red-200 px-4 py-2.5 rounded-full font-bold transition shadow active:scale-95"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>

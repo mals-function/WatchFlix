@@ -16,14 +16,14 @@
           <select 
             v-model="selectedGenre" 
             @change="handleFilterChange"
-            class="appearance-none bg-[#1a1a1a] hover:bg-[#222222] text-neutral-200 text-xs sm:text-sm font-semibold pl-4 pr-10 py-2.5 rounded-lg border border-neutral-800 hover:border-neutral-700 focus:outline-none focus:border-red-600 transition cursor-pointer shadow-md"
+            class="appearance-none bg-neutral-900/90 hover:bg-neutral-800 text-neutral-200 text-xs sm:text-sm font-bold pl-4 pr-10 py-2.5 rounded-full border border-neutral-800 hover:border-neutral-700 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-600/20 backdrop-blur-xl transition-all duration-200 cursor-pointer shadow-lg shadow-black/40"
           >
             <option :value="0">All Genres</option>
             <option v-for="g in genres" :key="g.id" :value="g.id">
               {{ g.name }}
             </option>
           </select>
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-neutral-400">
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-400">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
@@ -35,14 +35,14 @@
           <select 
             v-model="selectedSort" 
             @change="handleFilterChange"
-            class="appearance-none bg-[#1a1a1a] hover:bg-[#222222] text-neutral-200 text-xs sm:text-sm font-semibold pl-4 pr-10 py-2.5 rounded-lg border border-neutral-800 hover:border-neutral-700 focus:outline-none focus:border-red-600 transition cursor-pointer shadow-md"
+            class="appearance-none bg-neutral-900/90 hover:bg-neutral-800 text-neutral-200 text-xs sm:text-sm font-bold pl-4 pr-10 py-2.5 rounded-full border border-neutral-800 hover:border-neutral-700 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-600/20 backdrop-blur-xl transition-all duration-200 cursor-pointer shadow-lg shadow-black/40"
           >
             <option value="popularity.desc">Most Popular</option>
             <option value="vote_average.desc">Top Rated</option>
             <option value="trending">Trending Now</option>
             <option value="release_date.desc">Recently Added</option>
           </select>
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-neutral-400">
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-400">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
@@ -53,9 +53,10 @@
         <button 
           v-if="selectedGenre !== 0 || selectedSort !== 'popularity.desc'"
           @click="resetFilters"
-          class="text-xs text-neutral-400 hover:text-white px-3 py-2 rounded-lg bg-neutral-900 border border-neutral-800 transition"
+          class="text-xs text-neutral-300 hover:text-white font-bold px-4 py-2 rounded-full bg-neutral-900/90 hover:bg-neutral-800 border border-neutral-800 hover:border-neutral-700 backdrop-blur-xl transition-all active:scale-95 shadow-md flex items-center gap-1.5"
         >
-          Reset Filters
+          <span>✕</span>
+          <span>Clear Filters</span>
         </button>
       </div>
     </div>
@@ -149,14 +150,17 @@
     </div>
 
     <!-- Load More Button -->
-    <div v-if="items.length > 0 && hasMore" class="mt-12 text-center">
+    <div v-if="items.length > 0 && hasMore" class="mt-14 mb-6 text-center">
       <button 
         @click="loadMore"
         :disabled="loading"
-        class="px-8 py-3 bg-neutral-900 hover:bg-neutral-800 text-white text-sm font-bold rounded-xl border border-neutral-800 hover:border-neutral-700 transition shadow-lg active:scale-95 disabled:opacity-50"
+        class="group relative inline-flex items-center gap-2.5 px-8 sm:px-10 py-3.5 bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 hover:from-neutral-800 hover:to-neutral-700 text-white text-xs sm:text-sm font-extrabold uppercase tracking-wider rounded-full border border-neutral-700/80 hover:border-red-500/60 transition-all duration-300 shadow-xl hover:shadow-[0_8px_25px_-4px_rgba(229,9,20,0.3)] active:scale-95 disabled:opacity-50 cursor-pointer"
       >
-        <span v-if="loading">Loading more...</span>
-        <span v-else>Load More Titles</span>
+        <span v-if="loading" class="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></span>
+        <span>{{ loading ? 'Loading More Titles...' : 'Explore More Titles' }}</span>
+        <svg v-if="!loading" class="w-4 h-4 text-red-500 transition-transform group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+        </svg>
       </button>
     </div>
   </div>

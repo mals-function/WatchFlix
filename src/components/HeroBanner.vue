@@ -40,41 +40,43 @@
       </p>
 
       <!-- Action Buttons -->
-      <div class="mt-3.5 sm:mt-5 flex items-center gap-2.5 sm:gap-3">
+      <div class="mt-4 sm:mt-6 flex items-center gap-3">
         <!-- Play Button -->
         <button 
           @click="$emit('play', media)"
-          class="flex items-center gap-2 bg-white hover:bg-neutral-200 active:scale-95 text-black font-bold px-5 sm:px-6 py-2 sm:py-2.5 rounded-md shadow-lg transition"
+          class="group relative flex items-center gap-2.5 bg-white hover:bg-neutral-100 text-black font-extrabold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full shadow-[0_8px_25px_-5px_rgba(255,255,255,0.4)] transition-all duration-300 hover:shadow-[0_12px_30px_-5px_rgba(255,255,255,0.6)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 touch-manipulation cursor-pointer"
         >
-          <svg class="w-4 sm:w-5 h-4 sm:h-5 fill-current" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-          <span class="text-xs sm:text-sm md:text-base">Play</span>
+          <div class="w-5 h-5 rounded-full bg-black/10 flex items-center justify-center transition-transform group-hover:scale-110">
+            <svg class="w-3.5 h-3.5 fill-black ml-0.5" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </div>
+          <span class="text-xs sm:text-sm md:text-base tracking-wide">Play Now</span>
         </button>
 
         <!-- More Info Button -->
         <button 
           @click="$emit('detail', media)"
-          class="flex items-center gap-2 bg-neutral-700/80 hover:bg-neutral-700 active:scale-95 text-white font-semibold px-4 sm:px-5 py-2 sm:py-2.5 rounded-md backdrop-blur shadow-md transition"
+          class="flex items-center gap-2 bg-neutral-900/80 hover:bg-neutral-800/90 active:scale-95 text-white font-bold px-5 sm:px-6 py-2.5 sm:py-3 rounded-full backdrop-blur-xl border border-white/15 hover:border-white/30 shadow-lg shadow-black/40 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 touch-manipulation cursor-pointer"
         >
-          <svg class="w-4 sm:w-5 h-4 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 sm:w-5 h-4 sm:h-5 text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="10" stroke-width="2"/>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0-4h.01"/>
           </svg>
-          <span class="text-sm md:text-base">More Info</span>
+          <span class="text-xs sm:text-sm md:text-base">Details</span>
         </button>
 
         <!-- Watchlist Button -->
         <button 
           @click="$emit('toggle-watchlist', media)"
-          class="w-10 h-10 rounded-full border border-neutral-500/80 bg-neutral-900/60 hover:bg-neutral-800 text-white flex items-center justify-center transition active:scale-95"
+          class="w-11 sm:w-12 h-11 sm:h-12 rounded-full border border-white/15 hover:border-white/35 bg-neutral-900/80 hover:bg-neutral-800/90 text-white flex items-center justify-center backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95 shadow-lg shadow-black/40 cursor-pointer"
           :title="inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'"
         >
-          <svg v-if="inWatchlist" class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg v-if="inWatchlist" class="w-5 h-5 text-red-500 animate-scale" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
           </svg>
-          <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+          <svg v-else class="w-5 h-5 text-neutral-300 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4" />
           </svg>
         </button>
       </div>

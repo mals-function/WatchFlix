@@ -10,19 +10,20 @@
     />
 
     <!-- StreamFlix Style Category Filter Chips -->
-    <div class="relative z-30 px-4 md:px-8 -mt-6 sm:-mt-10 mb-4 flex items-center gap-2 overflow-x-auto no-scrollbar">
+    <div class="relative z-30 px-4 md:px-8 -mt-6 sm:-mt-10 mb-5 flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1">
       <button 
         v-for="chip in categoryChips" 
         :key="chip.id"
         @click="handleSelectCategory(chip.id)"
-        class="px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition border backdrop-blur-md shadow-md active:scale-95 cursor-pointer touch-manipulation select-none"
+        class="group relative px-4 sm:px-5 py-2 rounded-full text-xs font-extrabold whitespace-nowrap transition-all duration-300 border backdrop-blur-xl shadow-lg active:scale-95 cursor-pointer touch-manipulation select-none flex items-center gap-1.5"
         :class="[
           activeCategory === chip.id 
-            ? 'bg-red-600 border-red-600 text-white shadow-red-900/40' 
-            : 'bg-black/70 border-neutral-800 text-neutral-300 hover:text-white hover:bg-neutral-800'
+            ? 'bg-gradient-to-r from-red-600 to-red-700 border-red-500/80 text-white shadow-[0_4px_20px_-2px_rgba(229,9,20,0.5)] -translate-y-0.5' 
+            : 'bg-neutral-900/80 hover:bg-neutral-800/90 border-neutral-800/90 hover:border-neutral-700 text-neutral-300 hover:text-white'
         ]"
       >
-        {{ chip.label }}
+        <span v-if="activeCategory === chip.id" class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+        <span>{{ chip.label }}</span>
       </button>
     </div>
 
