@@ -10,36 +10,36 @@
         class="cursor-pointer flex items-center gap-1.5 select-none"
       >
         <span class="text-2xl sm:text-3xl font-black text-red-600 tracking-tighter filter drop-shadow">
-          WATCHFLIX
+          STREAMFLIX
         </span>
       </div>
 
       <!-- Desktop Navigation Menu -->
-      <nav class="hidden md:flex items-center gap-4 text-xs lg:text-sm font-medium text-neutral-300">
+      <nav class="hidden md:flex items-center gap-5 text-xs lg:text-sm font-semibold text-neutral-400">
         <button 
           @click="$emit('nav', 'home')"
-          class="hover:text-white transition"
+          class="hover:text-white transition py-1"
           :class="{ 'text-white font-bold': activeTab === 'home' }"
         >
           Home
         </button>
         <button 
-          @click="$emit('nav', 'series')"
-          class="hover:text-white transition"
-          :class="{ 'text-white font-bold': activeTab === 'series' }"
-        >
-          TV Shows
-        </button>
-        <button 
           @click="$emit('nav', 'movies')"
-          class="hover:text-white transition"
+          class="hover:text-white transition py-1"
           :class="{ 'text-white font-bold': activeTab === 'movies' }"
         >
           Movies
         </button>
         <button 
+          @click="$emit('nav', 'series')"
+          class="hover:text-white transition py-1"
+          :class="{ 'text-white font-bold': activeTab === 'series' }"
+        >
+          TV Series
+        </button>
+        <button 
           @click="$emit('nav', 'watchlist')"
-          class="hover:text-white transition"
+          class="hover:text-white transition py-1"
           :class="{ 'text-white font-bold': activeTab === 'watchlist' }"
         >
           My List
@@ -49,11 +49,22 @@
 
     <!-- Right: Search & Profile Avatar -->
     <div class="flex items-center gap-3">
-      <!-- Search Button -->
+      <!-- Search Input for Desktop (Matches StreamFlix) -->
+      <div 
+        @click="$emit('open-search')" 
+        class="hidden sm:flex items-center gap-2 bg-[#1c1c1c] hover:bg-[#252525] border border-neutral-800 rounded-lg px-3.5 py-1.5 cursor-pointer text-xs text-neutral-400 w-48 md:w-60 transition shadow-inner"
+      >
+        <svg class="w-4 h-4 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <span class="select-none">Search titles...</span>
+      </div>
+
+      <!-- Mobile Search Icon -->
       <button 
         @click="$emit('open-search')"
         aria-label="Search"
-        class="text-neutral-300 hover:text-white p-2 rounded-full hover:bg-neutral-800/60 transition"
+        class="sm:hidden text-neutral-300 hover:text-white p-2 rounded-full hover:bg-neutral-800/60 transition"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -70,27 +81,14 @@
         <span>⚙️ Admin</span>
       </button>
 
-      <!-- Active Profile Button (Click switches profile or navigates to Profile) -->
-      <button 
+      <!-- StreamFlix SF Profile Avatar Badge (Matches Screenshot) -->
+      <div 
         @click="$emit('open-profile-switcher')"
-        class="flex items-center gap-2 p-0.5 rounded focus:outline-none group"
+        class="w-8 h-8 rounded-md bg-red-600 hover:bg-red-700 text-white font-black text-xs flex items-center justify-center cursor-pointer shadow transition active:scale-95 select-none"
         title="Switch Profile"
       >
-        <img 
-          :src="userAvatar" 
-          alt="Active Profile" 
-          class="w-7 h-7 sm:w-8 sm:h-8 rounded object-cover border border-neutral-700 group-hover:border-red-600 transition"
-        />
-        <span class="hidden sm:inline text-xs font-semibold text-neutral-300 group-hover:text-white max-w-[80px] truncate">
-          {{ profileName }}
-        </span>
-        <span v-if="isAdmin" class="text-[9px] font-black uppercase bg-red-600 text-white px-1 rounded">
-          Admin
-        </span>
-        <svg class="w-3.5 h-3.5 text-neutral-400 group-hover:text-white hidden sm:block transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-        </svg>
-      </button>
+        SF
+      </div>
     </div>
   </header>
 </template>

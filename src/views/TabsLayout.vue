@@ -15,9 +15,24 @@
     <!-- Main View Content according to selected tab -->
     <main class="w-full">
       <HomeTab 
-        v-if="currentTab === 'home' || currentTab === 'movies' || currentTab === 'series'" 
-        :tab="currentTab"
+        v-if="currentTab === 'home'" 
         @update:tab="setTab"
+        @play="handlePlay" 
+        @detail="handleOpenDetail" 
+      />
+      <CatalogGridView 
+        v-else-if="currentTab === 'movies'"
+        type="movie"
+        title="MOVIES"
+        subtitle="Blockbusters, classics, and hidden gems for movie night"
+        @play="handlePlay" 
+        @detail="handleOpenDetail" 
+      />
+      <CatalogGridView 
+        v-else-if="currentTab === 'series'"
+        type="tv"
+        title="TV SERIES"
+        subtitle="Binge-worthy shows for every mood"
         @play="handlePlay" 
         @detail="handleOpenDetail" 
       />
@@ -181,6 +196,7 @@ import { useCustomStreamsStore } from '../stores/customStreams';
 
 import Navbar from '../components/Navbar.vue';
 import HomeTab from './HomeTab.vue';
+import CatalogGridView from '../components/CatalogGridView.vue';
 import SearchTab from './SearchTab.vue';
 import WatchlistTab from './WatchlistTab.vue';
 import ProfileTab from './ProfileTab.vue';
