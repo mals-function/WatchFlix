@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+:root {
+  --ion-background-color: #141414;
+  --ion-background-color-rgb: 20, 20, 20;
+  --ion-text-color: #ffffff;
+  --ion-text-color-rgb: 255, 255, 255;
+  --ion-color-primary: #E50914;
+  --ion-color-primary-rgb: 229, 9, 20;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #c10710;
+  --ion-color-primary-tint: #e8222b;
+  --ion-item-background: #181818;
+  --ion-toolbar-background: #141414;
+  --ion-tab-bar-background: rgba(18, 18, 18, 0.95);
+  --netflix-red: #E50914;
+  --netflix-black: #141414;
+  --netflix-dark: #181818;
+  --netflix-gray: #2F2F2F;
+  --netflix-light-gray: #AAAAAA;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #141414;
+}
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}
+
+/* Hide scrollbar for carousel rows while preserving scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body {
+  background-color: #141414;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Netflix gradient effects */
+.hero-gradient {
+  background: linear-gradient(180deg, rgba(20,20,20,0.1) 0%, rgba(20,20,20,0.8) 75%, #141414 100%);
+}
+
+.hero-vignette {
+  background: radial-gradient(circle at center, transparent 30%, rgba(20,20,20,0.95) 100%);
+}
+
+.card-hover-effect {
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.25s ease;
+}
+.card-hover-effect:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+  z-index: 10;
+}
