@@ -1,7 +1,7 @@
 <template>
   <div 
     v-if="isOpen" 
-    class="fixed inset-0 z-55 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 select-none overflow-y-auto animate-fadeIn"
+    class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 select-none overflow-y-auto animate-fadeIn"
   >
     <div class="relative w-full max-w-md bg-[#181818] border border-neutral-800 rounded-2xl p-6 sm:p-8 shadow-2xl text-white my-auto">
       <!-- Close button if already authenticated -->

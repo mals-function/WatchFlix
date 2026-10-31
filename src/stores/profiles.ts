@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 import { DEFAULT_PROFILES, type UserProfileSlot } from '../config/appConfig';
 
 export const useProfilesStore = defineStore('profiles', () => {
-  const profiles = ref<UserProfileSlot[]>([]);
+  const profiles = ref<UserProfileSlot[]>([...DEFAULT_PROFILES]);
   const activeProfileId = ref<string>('profile_1');
   const showSelector = ref(false);
 

@@ -93,7 +93,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import type { MediaItem, WatchHistoryItem } from '../types';
-import { tmdbService } from '../services/tmdb';
+import { tmdbService, MOCK_ITEMS } from '../services/tmdb';
 import { useWatchlistStore } from '../stores/watchlist';
 import { useHistoryStore } from '../stores/history';
 import HeroBanner from '../components/HeroBanner.vue';
@@ -117,8 +117,8 @@ const categoryChips = [
   { id: 'top', label: 'Top Rated' },
 ];
 
-const heroItem = ref<MediaItem | null>(null);
-const trendingItems = ref<MediaItem[]>([]);
+const heroItem = ref<MediaItem | null>(MOCK_ITEMS[0] || null);
+const trendingItems = ref<MediaItem[]>([...MOCK_ITEMS]);
 const netflixOriginals = ref<MediaItem[]>([]);
 const topRatedMovies = ref<MediaItem[]>([]);
 const popularSeries = ref<MediaItem[]>([]);

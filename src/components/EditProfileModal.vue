@@ -1,7 +1,7 @@
 <template>
   <div 
     v-if="isOpen && profile" 
-    class="fixed inset-0 z-55 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
+    class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
     @click.self="$emit('close')"
   >
     <div class="relative w-full max-w-md bg-[#181818] rounded-xl border border-neutral-800 text-white p-6 shadow-2xl">

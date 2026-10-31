@@ -6,11 +6,20 @@ export interface AuthAccount extends UserProfile {
   role: 'admin' | 'user';
 }
 
+const defaultAccount: AuthAccount = {
+  id: 'acc_user',
+  username: 'user',
+  email: 'user@watchflix.local',
+  role: 'user',
+  is_admin: false,
+  avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80',
+};
+
 export const useUserStore = defineStore('user', () => {
-  const currentUser = ref<AuthAccount | null>(null);
-  const isAuthenticated = ref(false);
+  const currentUser = ref<AuthAccount | null>(defaultAccount);
+  const isAuthenticated = ref(true);
   const loading = ref(false);
-  const isGuest = ref(false);
+  const isGuest = ref(true);
 
   const isAdmin = computed(() => {
     return currentUser.value?.is_admin === true || currentUser.value?.role === 'admin';

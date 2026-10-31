@@ -80,6 +80,20 @@
       </div>
     </div>
   </div>
+
+  <!-- Loading Skeleton Banner if media is pending -->
+  <div v-else class="relative w-full h-[65vh] sm:h-[75vh] max-h-[750px] overflow-hidden bg-neutral-900 animate-pulse flex items-end p-6 md:p-10">
+    <div class="space-y-4 max-w-xl w-full">
+      <div class="h-5 w-28 bg-neutral-800 rounded"></div>
+      <div class="h-10 md:h-14 w-3/4 bg-neutral-800 rounded"></div>
+      <div class="h-4 w-full bg-neutral-800 rounded"></div>
+      <div class="h-4 w-4/5 bg-neutral-800 rounded"></div>
+      <div class="flex gap-3 pt-3">
+        <div class="h-11 w-28 bg-neutral-800 rounded-md"></div>
+        <div class="h-11 w-32 bg-neutral-800 rounded-md"></div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">

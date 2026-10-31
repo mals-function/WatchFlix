@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen w-full bg-[#141414] text-white overflow-y-auto">
+  <ion-page class="relative min-h-screen w-full bg-[#141414] text-white overflow-y-auto block">
     <!-- Top Global Sticky Navbar -->
     <Navbar 
       :active-tab="currentTab"
@@ -152,15 +152,16 @@
 
     <!-- StreamFlix Login Modal (admin/admin or user/user) -->
     <LoginModal 
-      :is-open="isLoginOpen || !userStore.isAuthenticated"
-      :allow-close="userStore.isAuthenticated"
+      :is-open="isLoginOpen"
+      :allow-close="true"
       @close="isLoginOpen = false"
     />
-  </div>
+  </ion-page>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { IonPage } from '@ionic/vue';
 import type { MediaItem, Episode } from '../types';
 import type { UserProfileSlot } from '../config/appConfig';
 import { tmdbService } from '../services/tmdb';

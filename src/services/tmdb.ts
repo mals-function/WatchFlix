@@ -17,7 +17,7 @@ export const setTmdbApiKey = (key: string) => {
 };
 
 // High quality fallback mock data for instant offline & first-time preview
-const MOCK_ITEMS: MediaItem[] = [
+export const MOCK_ITEMS: MediaItem[] = [
   {
     id: 111110,
     title: 'Stranger Things',
