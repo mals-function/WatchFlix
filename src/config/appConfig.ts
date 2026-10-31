@@ -29,54 +29,133 @@ export interface UserProfileSlot {
   createdAt: string;
 }
 
-// 5 Netflix-style customizable profiles
+// 5 Netflix-style customizable profiles with animated avatars
 export const DEFAULT_PROFILES: UserProfileSlot[] = [
   {
     id: 'profile_1',
     name: 'Home',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80',
+    avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
     isKids: false,
     createdAt: new Date().toISOString()
   },
   {
     id: 'profile_2',
     name: 'Movie Buff',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80',
+    avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Titan&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
     isKids: false,
     createdAt: new Date().toISOString()
   },
   {
     id: 'profile_3',
     name: 'Series Fan',
-    avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=160&auto=format&fit=crop&q=80',
+    avatar: 'https://api.dicebear.com/7.x/lorelei/svg?seed=Ruby&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
     isKids: false,
     createdAt: new Date().toISOString()
   },
   {
     id: 'profile_4',
     name: 'Kids',
-    avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=160&auto=format&fit=crop&q=80',
+    avatar: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Happy&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
     isKids: true,
     createdAt: new Date().toISOString()
   },
   {
     id: 'profile_5',
     name: 'Anime',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&auto=format&fit=crop&q=80',
+    avatar: 'https://api.dicebear.com/7.x/micah/svg?seed=Aria&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
     isKids: false,
     createdAt: new Date().toISOString()
   }
 ];
 
-export const AVATAR_OPTIONS = [
-  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=160&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=160&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=160&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&auto=format&fit=crop&q=80',
+export interface AvatarCategory {
+  id: string;
+  label: string;
+  style: string;
+  avatars: string[];
+}
+
+export const ANIMATED_AVATAR_CATEGORIES: AvatarCategory[] = [
+  {
+    id: 'adventurer',
+    label: 'Anime & Heroes',
+    style: 'adventurer',
+    avatars: [
+      'https://api.dicebear.com/7.x/adventurer/svg?seed=Aiden&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/adventurer/svg?seed=Shadow&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/adventurer/svg?seed=Luna&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/adventurer/svg?seed=Maya&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/adventurer/svg?seed=Leo&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/adventurer/svg?seed=Zoe&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/adventurer/svg?seed=Kai&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+    ]
+  },
+  {
+    id: 'bottts',
+    label: 'Cyber Bots',
+    style: 'bottts',
+    avatars: [
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Cyber&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Nexus&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Vortex&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Sparky&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Titan&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Bolt&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Echo&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Matrix&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+    ]
+  },
+  {
+    id: 'fun-emoji',
+    label: '3D Emojis',
+    style: 'fun-emoji',
+    avatars: [
+      'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Happy&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Cool&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Wink&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Star&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Fire&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Magic&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Neon&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Hero&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+    ]
+  },
+  {
+    id: 'lorelei',
+    label: 'Stylized Art',
+    style: 'lorelei',
+    avatars: [
+      'https://api.dicebear.com/7.x/lorelei/svg?seed=Amber&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/lorelei/svg?seed=Ethan&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/lorelei/svg?seed=Sasha&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/lorelei/svg?seed=Oliver&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/lorelei/svg?seed=Ruby&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/lorelei/svg?seed=Milo&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/lorelei/svg?seed=Chloe&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/lorelei/svg?seed=Jasper&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+    ]
+  },
+  {
+    id: 'micah',
+    label: 'Chibi & Pop',
+    style: 'micah',
+    avatars: [
+      'https://api.dicebear.com/7.x/micah/svg?seed=Aria&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/micah/svg?seed=Jack&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/micah/svg?seed=Lily&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/micah/svg?seed=Noah&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/micah/svg?seed=Mia&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/micah/svg?seed=Liam&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/micah/svg?seed=Emma&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+      'https://api.dicebear.com/7.x/micah/svg?seed=Lucas&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
+    ]
+  }
 ];
+
+export const AVATAR_OPTIONS: string[] = ANIMATED_AVATAR_CATEGORIES.flatMap(c => c.avatars);
+
+export const generateCustomAvatar = (style: string = 'adventurer', seed: string = ''): string => {
+  const safeSeed = encodeURIComponent(seed.trim() || Math.random().toString(36).substring(2, 9));
+  return `https://api.dicebear.com/7.x/${style}/svg?seed=${safeSeed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
+};

@@ -12,7 +12,7 @@ const defaultAccount: AuthAccount = {
   email: 'user@watchflix.local',
   role: 'user',
   is_admin: false,
-  avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80',
+  avatar_url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
 };
 
 export const useUserStore = defineStore('user', () => {
@@ -63,7 +63,7 @@ export const useUserStore = defineStore('user', () => {
         email: 'admin@watchflix.local',
         role: 'admin',
         is_admin: true,
-        avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80',
+        avatar_url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Shadow&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
       };
       currentUser.value = adminAcc;
       isAuthenticated.value = true;
@@ -80,7 +80,7 @@ export const useUserStore = defineStore('user', () => {
         email: 'user@watchflix.local',
         role: 'user',
         is_admin: false,
-        avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80',
+        avatar_url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf',
       };
       currentUser.value = userAcc;
       isAuthenticated.value = true;
@@ -110,6 +110,13 @@ export const useUserStore = defineStore('user', () => {
     login('user', 'user');
   };
 
+  const updateAvatar = (newAvatarUrl: string) => {
+    if (currentUser.value) {
+      currentUser.value.avatar_url = newAvatarUrl;
+      localStorage.setItem('WATCHFLIX_CURRENT_ACCOUNT', JSON.stringify(currentUser.value));
+    }
+  };
+
   const logout = () => {
     currentUser.value = null;
     isAuthenticated.value = false;
@@ -128,6 +135,7 @@ export const useUserStore = defineStore('user', () => {
     signIn,
     signUp,
     loginAsGuest,
+    updateAvatar,
     logout,
   };
 });
