@@ -283,7 +283,7 @@ const handlePlay = (media: MediaItem, episode?: { season: number; number: number
   activeMedia.value = media;
   activeEpisode.value = episode;
 
-  // Check custom stream store first
+  // Check if a direct custom HLS/MP4 stream was assigned in Admin
   const custom = customStreamsStore.getStreamForMedia(media.id, episode?.season, episode?.number);
   if (custom) {
     activeStreamUrl.value = custom.stream_url;
@@ -291,13 +291,10 @@ const handlePlay = (media: MediaItem, episode?: { season: number; number: number
   } else if (media.custom_stream_url) {
     activeStreamUrl.value = media.custom_stream_url;
     activeStreamType.value = 'hls';
-  } else if (media.trailer_url) {
-    activeStreamUrl.value = media.trailer_url;
-    activeStreamType.value = 'youtube';
   } else {
-    // Demo HLS stream
-    activeStreamUrl.value = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
-    activeStreamType.value = 'hls';
+    // Default to multi-server embed stream (Server 1: VidLink, Server 2: VidSrc, etc.)
+    activeStreamUrl.value = undefined;
+    activeStreamType.value = 'embed';
   }
 
   isDetailOpen.value = false;
